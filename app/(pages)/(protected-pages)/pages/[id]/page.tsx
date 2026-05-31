@@ -1,6 +1,5 @@
 'use client';
 import moment from 'moment';
-import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
@@ -48,7 +47,7 @@ function PageDetails() {
         </header>
 
         {/* Main Content */}
-        <main className="flex-1 p-6 md:p-8 max-w-6xl mx-auto w-full">
+        <main className="flex-1 p-6 md:p-8 max-w-6xl mx-auto w-full overflow-y-scroll">
           {/* Main Card Container */}
           <div className="border border-neutral-800 rounded-xl bg-[#0a0a0a] overflow-hidden flex flex-col shadow-2xl">
             {/* Card Header */}
@@ -216,20 +215,6 @@ function PageDetails() {
                     >
                       {pageDetails?.data?.url}
                     </a>
-                  </div>
-
-                  <div>
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <h3 className="text-[13px] text-neutral-400 font-medium">
-                        xxx
-                      </h3>
-                    </div>
-                    <Link
-                      href={`#`}
-                      className="text-sm text-neutral-100 hover:text-white flex items-center gap-1.5 transition"
-                    >
-                      xxx
-                    </Link>
                   </div>
 
                   {/* Status & Created Row */}
