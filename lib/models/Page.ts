@@ -14,11 +14,6 @@ const pageSchema = new Schema(
       type: String,
       required: true,
     },
-    categories: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Category',
-      required: true,
-    },
     views: {
       type: Number,
       required: false,

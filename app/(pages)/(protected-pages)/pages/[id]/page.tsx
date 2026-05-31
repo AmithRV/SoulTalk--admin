@@ -221,14 +221,14 @@ function PageDetails() {
                   <div>
                     <div className="flex items-center gap-2 mb-1.5">
                       <h3 className="text-[13px] text-neutral-400 font-medium">
-                        Category
+                        xxx
                       </h3>
                     </div>
                     <Link
                       href={`#`}
                       className="text-sm text-neutral-100 hover:text-white flex items-center gap-1.5 transition"
                     >
-                      {pageDetails?.data?.categories?.name}
+                      xxx
                     </Link>
                   </div>
 

@@ -269,16 +269,13 @@ function Pages() {
 
       <AddPageModal
         onClose={onClose}
-        categories={[]}
         handleAddPage={handleAddPage}
         open={show.state && show.type === 'add-page'}
         loading={loading.type === 'add-page' && loading.state}
-        currentCategoryId={''}
       />
 
       <EditPageModal
         onClose={onClose}
-        categories={[]}
         pageDetails={show?.data?.page}
         handleUpdatePage={handleUpdatePage}
         open={show.state && show.type === 'edit-page'}

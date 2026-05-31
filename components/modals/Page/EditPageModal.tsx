@@ -6,7 +6,6 @@ type Inputs = {
   url: string;
   name: string;
   publicUrl: string;
-  categoryId: string;
   description: string;
 };
 
@@ -14,8 +13,6 @@ type props = {
   open: boolean;
   loading: boolean;
   pageDetails: any;
-
-  categories: any[];
   onClose: () => void;
   handleUpdatePage: (formData: any) => void;
 };
@@ -25,7 +22,6 @@ function EditPageModal({
   pageDetails,
   handleUpdatePage,
   loading = false,
-  categories = [],
 }: props) {
   //
   const {
@@ -41,7 +37,6 @@ function EditPageModal({
       url: formData?.url,
       id: pageDetails?._id,
       name: formData?.name,
-      category: formData?.categoryId,
       publicUrl: formData?.publicUrl,
       description: formData?.description,
     };
@@ -60,9 +55,6 @@ function EditPageModal({
 
   useEffect(() => {
     if (open && pageDetails) {
-      setValue('categoryId', pageDetails?.categories?._id, {
-        shouldValidate: true,
-      });
       setValue('url', pageDetails?.url, { shouldValidate: true });
       setValue('name', pageDetails?.name, { shouldValidate: true });
       setValue('description', pageDetails?.description, {
@@ -142,35 +134,6 @@ function EditPageModal({
               />
               {errors.publicUrl && (
                 <span className="form-error">{errors.publicUrl.message}</span>
-              )}
-            </div>
-
-            {/* Category */}
-            <div>
-              <label className="text-sm text-gray-400">Category</label>
-              <select
-                {...register('categoryId', {
-                  required: '*category is required',
-                })}
-                className={cn(
-                  'w-full mt-1 bg-[#2a2b30] p-2 rounded outline-none',
-                  {
-                    'input-error': errors.categoryId,
-                  },
-                )}
-                defaultValue=""
-              >
-                <option value="" disabled>
-                  Select
-                </option>
-                {categories.map((category, index) => (
-                  <option key={index} value={category?._id}>
-                    {category?.name}
-                  </option>
-                ))}
-              </select>
-              {errors.categoryId && (
-                <span className="form-error">{errors.categoryId.message}</span>
               )}
             </div>
 

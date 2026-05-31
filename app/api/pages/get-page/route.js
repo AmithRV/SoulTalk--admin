@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 import Page from '@/lib/models/Page';
 import { NextResponse } from 'next/server';
-import Category from '@/lib/models/Category';
 import { formatZodErrors } from '@/lib/utils';
 import { databaseConnection } from '@/lib/dbConfig';
 
@@ -23,9 +22,7 @@ export async function GET(request) {
           { status: 404 },
         );
       } else {
-        const page = await Page.findById(id)
-          .populate('categories') // Category details
-          .sort({ createdAt: -1 });
+        const page = await Page.findById(id).sort({ createdAt: -1 });
 
         return NextResponse.json(
           { message: 'page', data: { page } },
