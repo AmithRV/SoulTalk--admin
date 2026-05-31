@@ -24,3 +24,13 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.form-error {
+  color: #ff4d4f;
+  font-size: 0.875rem;
+}
+
+.input-error {
+  border: 1px solid #ff4d4f;
+
+}
