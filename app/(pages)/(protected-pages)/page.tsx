@@ -23,15 +23,13 @@ import { show } from '@/types/index';
 import { useEffect, useState } from 'react';
 import { TopBar } from '@/components/layout';
 import toast, { Toaster } from 'react-hot-toast';
-import { listCategories } from '@/lib/api-collection/categories';
 import { AddPageModal, EditPageModal } from '@/components/modals/Page';
 
 function Pages() {
   //
-  const [show, setShow] = useState<show>({ state: false, type: '' });
   const [pages, setPages] = useState({ loading: true, data: [] });
   const [loading, setLoading] = useState({ type: '', state: false });
-  const [categories, setCategories] = useState({ loading: true, data: [] });
+  const [show, setShow] = useState<show>({ state: false, type: '' });
 
   const onClose = () => {
     setShow({ state: false, type: '' });
@@ -114,30 +112,12 @@ function Pages() {
       });
   };
 
-  const handleListCategories = () => {
-    setCategories({ loading: true, data: [] });
-    listCategories()
-      .then((res) => {
-        setCategories({ data: res.data, loading: false });
-      })
-      .catch((error: any) => {
-        //
-        const defaultMsg = 'Something went wrong';
-        const message = error?.response?.data?.message;
-
-        toast.error(message || defaultMsg);
-        setCategories({ data: [], loading: false });
-      });
-  };
-
   const handleRefresh = () => {
     handleListPages();
-    handleListCategories();
   };
 
   useEffect(() => {
     handleListPages();
-    handleListCategories();
   }, []);
 
   return (
@@ -149,7 +129,7 @@ function Pages() {
           btnlabel="Add Page"
           actionType="add-page"
           handleRefresh={handleRefresh}
-          loading={pages?.loading || categories?.loading}
+          loading={pages?.loading}
         />
 
         {/* Center Content */}
@@ -164,7 +144,6 @@ function Pages() {
                     <th className="px-6 py-3 w-12.5">#</th>
                     <th className="px-6 py-3">Name</th>
                     <th className="px-6 py-3">Views</th>
-                    <th className="px-6 py-3">Category</th>
                     <th className="px-6 py-3">Created At</th>
                     <th className="px-6 py-3">Updated At</th>
                     <th className="px-6 py-3">Actions</th>
@@ -186,14 +165,7 @@ function Pages() {
                           </Link>
                         </td>
                         <td className="px-6 py-4">{page?.views}</td>
-                        <td className="px-6 py-4">
-                          <Link
-                            href={`/categories/${page?.categories?._id}`}
-                            className="border-b border-dotted"
-                          >
-                            {page?.categories?.name}
-                          </Link>
-                        </td>
+
                         <td className="px-6 py-4">
                           {moment(page?.createdAt).format('DD-MMM-YY hh:mm A')}
                         </td>
@@ -297,15 +269,16 @@ function Pages() {
 
       <AddPageModal
         onClose={onClose}
-        categories={categories.data}
+        categories={[]}
         handleAddPage={handleAddPage}
         open={show.state && show.type === 'add-page'}
         loading={loading.type === 'add-page' && loading.state}
+        currentCategoryId={''}
       />
 
       <EditPageModal
         onClose={onClose}
-        categories={categories.data}
+        categories={[]}
         pageDetails={show?.data?.page}
         handleUpdatePage={handleUpdatePage}
         open={show.state && show.type === 'edit-page'}

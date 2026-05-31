@@ -225,7 +225,7 @@ function PageDetails() {
                       </h3>
                     </div>
                     <Link
-                      href={`/categories/${pageDetails?.data?.categories?._id}`}
+                      href={`#`}
                       className="text-sm text-neutral-100 hover:text-white flex items-center gap-1.5 transition"
                     >
                       {pageDetails?.data?.categories?.name}

@@ -21,11 +21,6 @@ function Layout({
 
   const menu = [
     { name: 'Pages', link: '/', activeUrls: ['/', `/pages/${id}`] },
-    {
-      name: 'Categories',
-      link: '/categories',
-      activeUrls: ['/categories', `/categories/${id}`],
-    },
   ];
   const onClose = () => {
     setShow({ state: false, type: '' });
