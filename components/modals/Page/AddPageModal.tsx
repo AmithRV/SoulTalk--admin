@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 type Inputs = {
   url: string;
   name: string;
+  imageName: string;
   publicUrl: string;
   description: string;
 };
@@ -27,7 +28,6 @@ function AddPageModal({
   const {
     reset,
     watch,
-    setValue,
     register,
     handleSubmit,
     formState: { errors },
@@ -40,6 +40,7 @@ function AddPageModal({
       url: formData?.url,
       name: formData?.name,
       publicUrl: formData?.publicUrl,
+      imageName: formData?.imageName,
       description: formData?.description,
     };
     handleAddPage(data);
@@ -137,6 +138,27 @@ function AddPageModal({
               />
               {errors.publicUrl && (
                 <span className="form-error">{errors.publicUrl.message}</span>
+              )}
+            </div>
+
+            {/*Image name */}
+            <div>
+              <label className="text-sm text-gray-400">Image Name</label>
+              <input
+                type="text"
+                placeholder="image.png"
+                {...register('imageName', {
+                  required: '*image name is required',
+                })}
+                className={cn(
+                  'w-full mt-1 bg-[#2a2b30] p-2 rounded outline-none',
+                  {
+                    'input-error': errors.imageName,
+                  },
+                )}
+              />
+              {errors.imageName && (
+                <span className="form-error">{errors.imageName.message}</span>
               )}
             </div>
 

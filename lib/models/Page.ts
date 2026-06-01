@@ -23,6 +23,11 @@ const pageSchema = new Schema(
       unique: false,
       required: false,
     },
+    imageName: {
+      type: String,
+      unique: false,
+      required: false,
+    },
   },
   { timestamps: true },
 );

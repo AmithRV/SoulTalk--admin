@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 type Inputs = {
   url: string;
   name: string;
+  imageName: string;
   publicUrl: string;
   description: string;
 };
@@ -38,6 +39,7 @@ function EditPageModal({
       id: pageDetails?._id,
       name: formData?.name,
       publicUrl: formData?.publicUrl,
+      imageName: formData?.imageName,
       description: formData?.description,
     };
     handleUpdatePage(data);
@@ -61,7 +63,7 @@ function EditPageModal({
         shouldValidate: true,
       });
       setValue('publicUrl', pageDetails?.publicUrl, { shouldValidate: true });
-      setValue('publicUrl', pageDetails?.publicUrl, { shouldValidate: true });
+      setValue('imageName', pageDetails?.imageName);
     } else {
       reset();
     }
@@ -134,6 +136,26 @@ function EditPageModal({
               />
               {errors.publicUrl && (
                 <span className="form-error">{errors.publicUrl.message}</span>
+              )}
+            </div>
+
+            <div>
+              <label className="text-sm text-gray-400">Image Name</label>
+              <input
+                type="text"
+                placeholder="image.png"
+                {...register('imageName', {
+                  required: '*image name is required',
+                })}
+                className={cn(
+                  'w-full mt-1 bg-[#2a2b30] p-2 rounded outline-none',
+                  {
+                    'input-error': errors.imageName,
+                  },
+                )}
+              />
+              {errors.imageName && (
+                <span className="form-error">{errors.imageName.message}</span>
               )}
             </div>
 

@@ -10,7 +10,7 @@ export async function PATCH(request) {
   try {
     const reqBody = await request.json();
 
-    const { id, name, url, publicUrl, description } =
+    const { id, name, url, publicUrl, description, imageName } =
       updatePageSchema.parse(reqBody);
 
     const pageExists = await Page.findById(id);
@@ -25,6 +25,7 @@ export async function PATCH(request) {
             url,
             name,
             publicUrl,
+            imageName,
             description,
           },
         },

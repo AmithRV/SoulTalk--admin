@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 export const addPageSchema = z.object({
+  imageName: z.string().optional(),
   url: z.string().min(1, 'url rquired'),
   name: z.string().min(1, 'name rquired'),
   publicUrl: z.string().min(1, 'public url rquired'),
@@ -8,6 +9,7 @@ export const addPageSchema = z.object({
 });
 
 export const updatePageSchema = z.object({
+  imageName: z.string().optional(),
   url: z.string().min(1, 'url rquired'),
   name: z.string().min(1, 'name rquired'),
   publicUrl: z.string().min(1, 'public url rquired'),
