@@ -35,6 +35,35 @@ function Pages() {
     setShow({ state: false, type: '' });
   };
 
+  const handleSort = (type: string) => {
+    // 1. Create a shallow copy of the data array to avoid mutating React state directly
+    const sortedData = [...pages.data].sort((a: any, b: any) => {
+      const valueA = a[type];
+      const valueB = b[type];
+
+      // Safety check for undefined properties
+      if (valueA === undefined || valueB === undefined) return 0;
+
+      // 2. Handle Numbers (e.g., sorting by 'views')
+      if (typeof valueA === 'number' && typeof valueB === 'number') {
+        return valueA - valueB; // Ascending order
+      }
+
+      // 3. Handle Strings and Date Strings (e.g., sorting by 'name' or 'createdAt')
+      if (typeof valueA === 'string' && typeof valueB === 'string') {
+        // localeCompare handles alphabetical sorting and works perfectly for ISO date strings too
+        return valueA.localeCompare(valueB);
+      }
+
+      return 0;
+    });
+
+    // 4. Update the state while preserving the 'loading' flag
+    setPages((prevPages) => ({
+      ...prevPages,
+      data: sortedData,
+    }));
+  };
   const handleListPages = () => {
     setPages({ loading: true, data: [] });
     listPages()
@@ -119,6 +148,7 @@ function Pages() {
   useEffect(() => {
     handleListPages();
   }, []);
+  console.log('pages : ', pages);
 
   return (
     <>
@@ -143,9 +173,24 @@ function Pages() {
                   <tr>
                     <th className="px-6 py-3 w-12.5">#</th>
                     <th className="px-6 py-3">Name</th>
-                    <th className="px-6 py-3">Views</th>
-                    <th className="px-6 py-3">Created At</th>
-                    <th className="px-6 py-3">Updated At</th>
+                    <th
+                      className="px-6 py-3 cursor-pointer"
+                      onClick={() => handleSort('views')}
+                    >
+                      Views
+                    </th>
+                    <th
+                      className="px-6 py-3 cursor-pointer"
+                      onClick={() => handleSort('createdAt')}
+                    >
+                      Created At
+                    </th>
+                    <th
+                      className="px-6 py-3 cursor-pointer"
+                      onClick={() => handleSort('updatedAt')}
+                    >
+                      Updated At
+                    </th>
                     <th className="px-6 py-3">Actions</th>
                   </tr>
                 </thead>
