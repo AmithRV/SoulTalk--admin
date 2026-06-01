@@ -74,17 +74,12 @@ function PageDetails() {
             {/* Card Body */}
             <div className="flex flex-col lg:flex-row p-5 md:p-6 gap-8">
               {/* Left: Thumbnail Preview */}
-              <div className="w-full lg:w-2/5 flex flex-col border border-neutral-800 rounded-lg overflow-hidden bg-[#0a0a0a]">
-                {/* Image section with pink background */}
-                <div className="bg-[#dda8a8] h-64 flex items-center justify-center">
-                  <img
-                    src={`https://soultalk.blog/public/assets/${pageDetails?.data?.imageName}`}
-                    alt="Thumbnail"
-                    className="w-full h-full object-fill"
-                  />
-                </div>
-                {/* Bottom Dark Bar of thumbnail container */}
-                <div className="bg-[#0a0a0a] h-12"></div>
+              <div className="w-full border border-neutral-800 rounded-lg  bg-[#0a0a0a]">
+                <img
+                  src={`https://soultalk.blog/public/assets/${pageDetails?.data?.imageName}`}
+                  alt="Thumbnail"
+                  className="w-full h-full object-fill"
+                />
               </div>
 
               {/* Right: Details */}
