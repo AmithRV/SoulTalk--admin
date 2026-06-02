@@ -14,8 +14,8 @@ export async function POST(request) {
 
     const newPage = await Comment.create({
       name,
-      pageId,
       comment,
+      page: pageId,
     });
 
     return NextResponse.json(

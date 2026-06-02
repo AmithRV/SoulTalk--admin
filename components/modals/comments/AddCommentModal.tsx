@@ -11,6 +11,7 @@ type Inputs = {
 type props = {
   pages: any[];
   open: boolean;
+  pageId?: string;
   loading: boolean;
   onClose: () => void;
   handleAddComment: (formData: any) => void;
@@ -19,6 +20,7 @@ type props = {
 function AddCommentModal({
   open,
   onClose,
+  pageId = '',
   pages = [],
   handleAddComment,
   loading = false,
@@ -28,12 +30,13 @@ function AddCommentModal({
   const {
     reset,
     register,
+    setValue,
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>({
     defaultValues: {
       name: '',
-      pageId: '',
+      pageId: pageId || '',
       comment: '',
     },
   });
@@ -55,7 +58,12 @@ function AddCommentModal({
     if (!open) {
       reset();
     }
-  }, [open, reset]);
+    if (open && pages?.length > 0 && pageId) {
+      setValue('pageId', pageId, {
+        shouldValidate: true,
+      });
+    }
+  }, [open, pages, pageId, reset]);
 
   if (open) {
     return (
@@ -72,12 +80,14 @@ function AddCommentModal({
                   required: '*page is required',
                 })}
                 className={cn(
-                  'w-full mt-1 bg-[#2a2b30] p-2 rounded outline-none',
+                  'w-full mt-1 bg-[#2a2b30] p-2 rounded outline-none cursor-pointer',
                   {
                     'input-error': errors.pageId,
+                    'cursor-not-allowed': pageId,
                   },
                 )}
                 defaultValue=""
+                disabled={pageId ? true : false}
               >
                 <option value="" disabled>
                   Select a page

@@ -70,7 +70,7 @@ function Pages() {
     setLoading({ type: 'add-comment', state: true });
     addComment(formData)
       .then((res) => {
-        handleListPages();
+        handleListComments();
         toast.success(res.message);
         onClose();
       })
@@ -137,16 +137,11 @@ function Pages() {
     handleListComments();
   }, []);
 
-  useEffect(() => {
-    console.clear();
-    console.log('pages : ', pages);
-    console.log('comments : ', comments);
-  }, [comments, pages]);
   return (
     <>
       <main className="flex-1 flex flex-col">
         <TopBar
-          label="Comments"
+          label={`Comments (${comments?.data?.length || 0})`}
           setShow={setShow}
           btnlabel="Add Comment"
           actionType="add-comment"
@@ -164,6 +159,7 @@ function Pages() {
                 <thead className="bg-[#2a2b30] sticky top-0 z-10">
                   <tr>
                     <th className="px-6 py-3 w-12.5">#</th>
+                    <th className="px-6 py-3 cursor-pointer">page</th>
                     <th className="px-6 py-3">Name</th>
                     <th className="px-6 py-3 cursor-pointer">Comment</th>
                     <th className="px-6 py-3 cursor-pointer">Created At</th>
@@ -177,6 +173,9 @@ function Pages() {
                     comments?.data.map((comment: any, index) => (
                       <tr key={comment?._id} className="hover:bg-[#2a2b30]">
                         <td className="px-6 py-4 w-12.5">{index + 1}</td>
+                        <td className="px-6 py-4 w-12.5">
+                          {comment?.page?.name}
+                        </td>
                         <td className="px-6 py-4 ">
                           <Link
                             className="border-b border-dotted"

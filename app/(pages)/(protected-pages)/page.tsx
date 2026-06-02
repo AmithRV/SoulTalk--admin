@@ -154,7 +154,7 @@ function Pages() {
     <>
       <main className="flex-1 flex flex-col">
         <TopBar
-          label="Pages"
+          label={`Pages (${pages?.data?.length || 0})`}
           setShow={setShow}
           btnlabel="Add Page"
           actionType="add-page"

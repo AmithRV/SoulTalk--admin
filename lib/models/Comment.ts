@@ -6,12 +6,17 @@ const commentSchema = new Schema(
       type: String,
       required: true,
     },
-    pageId: {
+    // pageId: {
+    //   type: String,
+    //   required: true,
+    // },
+    comment: {
       type: String,
       required: true,
     },
-    comment: {
-      type: String,
+    page: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Page',
       required: true,
     },
   },

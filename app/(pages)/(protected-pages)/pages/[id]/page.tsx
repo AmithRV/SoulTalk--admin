@@ -1,9 +1,26 @@
 'use client';
 import moment from 'moment';
+import {
+  MyTooltip,
+  JsonPreviewModal,
+  DeleteConfirmationModal,
+} from '@/components/modals';
+import { show } from '@/types/show';
+import {
+  AddCommentModal,
+  EditCommentModal,
+} from '@/components/modals/comments';
+import {
+  addComment,
+  listComments,
+  deleteComment,
+  updateComment,
+} from '@/lib/api-collection/comments';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import { getPage } from '@/lib/api-collection/pages';
+import { getPage, listPages } from '@/lib/api-collection/pages';
+import { Edit, SquareTerminal, Trash2 } from 'lucide-react';
 
 function PageDetails() {
   //
@@ -13,6 +30,14 @@ function PageDetails() {
     data: any;
     loading: boolean;
   }>({ data: {}, loading: false });
+  const [pages, setPages] = useState({ loading: true, data: [] });
+  const [show, setShow] = useState<show>({ state: false, type: '' });
+  const [loading, setLoading] = useState({ type: '', state: false });
+  const [comments, setComments] = useState({ loading: true, data: [] });
+
+  const onClose = () => {
+    setShow({ state: false, type: '' });
+  };
 
   const handleGetPageDetails = () => {
     setPageDetails({ loading: true, data: [] });
@@ -30,7 +55,102 @@ function PageDetails() {
       });
   };
 
+  const handleListPages = () => {
+    setPages({ loading: true, data: [] });
+    listPages()
+      .then((res) => {
+        setPages({ data: res.data, loading: false });
+      })
+      .catch((error: any) => {
+        //
+        const defaultMsg = 'Something went wrong';
+        const message = error?.response?.data?.message;
+
+        toast.error(message || defaultMsg);
+        setPages({ data: [], loading: false });
+      });
+  };
+
+  const handleListComments = () => {
+    setComments({ loading: true, data: [] });
+    listComments(id)
+      .then((res) => {
+        setComments({ data: res.data, loading: false });
+      })
+      .catch((error: any) => {
+        //
+        const defaultMsg = 'Something went wrong';
+        const message = error?.response?.data?.message;
+
+        toast.error(message || defaultMsg);
+        setComments({ data: [], loading: false });
+      });
+  };
+
+  const handleAddComment = (formData: any) => {
+    setLoading({ type: 'add-comment', state: true });
+    addComment(formData)
+      .then((res) => {
+        handleListComments();
+        toast.success(res.message);
+        onClose();
+      })
+      .catch((error: any) => {
+        //
+        const defaultMsg = 'Something went wrong';
+        const message = error?.response?.data?.message;
+
+        toast.error(message || defaultMsg);
+      })
+      .finally(() => {
+        setLoading({ type: 'add-comment', state: false });
+      });
+  };
+
+  const handleDeleteComment = () => {
+    const pageId = show?.data?.id;
+    setLoading({ type: 'delete-comment', state: true });
+    deleteComment(pageId)
+      .then((res) => {
+        handleListComments();
+        toast.success(res.message);
+        onClose();
+      })
+      .catch((error: any) => {
+        //
+        const defaultMsg = 'Something went wrong';
+        const message = error?.response?.data?.message;
+
+        toast.error(message || defaultMsg);
+      })
+      .finally(() => {
+        setLoading({ type: 'delete-comment', state: false });
+      });
+  };
+
+  const handleUpdateComment = (formData: any) => {
+    setLoading({ type: 'edit-comment', state: true });
+    updateComment(formData)
+      .then((res) => {
+        handleListComments();
+        toast.success(res.message);
+        onClose();
+      })
+      .catch((error: any) => {
+        //
+        const defaultMsg = 'Something went wrong';
+        const message = error?.response?.data?.message;
+
+        toast.error(message || defaultMsg);
+      })
+      .finally(() => {
+        setLoading({ type: 'edit-comment', state: false });
+      });
+  };
+
   useEffect(() => {
+    handleListPages();
+    handleListComments();
     handleGetPageDetails();
   }, []);
 
@@ -173,9 +293,139 @@ function PageDetails() {
                 </div>
               </div>
             </div>
+
+            {/* comments */}
+            <div className="p-5 border-t border-neutral-800">
+              <div className="w-full flex justify-between items-center">
+                <h2 className="text-base font-semibold text-white flex items-center">
+                  Comments :{' '}
+                  <span className="ml-1 pt-0.5">{comments?.data?.length}</span>
+                </h2>
+                <button
+                  onClick={() => {
+                    setShow({ type: 'add-comment', state: true });
+                  }}
+                  className="bg-purple-600 hover:bg-purple-700 px-4 py-1 rounded-full text-sm font-bold cursor-pointer"
+                >
+                  Add Comment
+                </button>
+              </div>
+
+              <div className="space-y-6 mt-4">
+                {/* <!-- Comment --> */}
+                {comments?.data.map((comment: any) => (
+                  <div
+                    key={comment?._id}
+                    className="bg-brand-surface border border-gray-800/60 p-5 rounded-2xl"
+                  >
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-purple-900/50 border border-brand-accent/30 flex items-center justify-center text-xs font-bold text-brand-accent uppercase">
+                          {comment?.name
+                            .trim()
+                            .split(/\s+/)
+                            .map((w: string) => w.charAt(0))
+                            .join('')}
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="font-bold text-white text-sm">
+                            {comment?.name}
+                          </span>
+                          <span className="text-xs text-gray-500">
+                            {moment(comment?.createdAt).fromNow()}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="px-6 py-4 text-green-400 flex items-center gap-4">
+                        <MyTooltip content="Edit Comment">
+                          <Edit
+                            onClick={() => {
+                              setShow({
+                                state: true,
+                                type: 'edit-comment',
+                                data: {
+                                  comment,
+                                },
+                              });
+                            }}
+                            className="w-5 h-5 text-gray-400 cursor-pointer"
+                          />
+                        </MyTooltip>
+
+                        <MyTooltip content="View Comment Details">
+                          <SquareTerminal
+                            onClick={() => {
+                              setShow({
+                                state: true,
+                                type: 'preview-json',
+                                data: {
+                                  json: comment,
+                                },
+                              });
+                            }}
+                            className="w-5 h-5 text-gray-400 ursor-pointer cursor-pointer"
+                          />
+                        </MyTooltip>
+
+                        <MyTooltip content="Delete Comment">
+                          <Trash2
+                            onClick={() => {
+                              setShow({
+                                state: true,
+                                type: 'delete-comment',
+                                data: {
+                                  id: comment?._id,
+                                  comment: comment?.comment,
+                                },
+                              });
+                            }}
+                            className="w-5 h-5 text-red-400 cursor-pointer"
+                          />
+                        </MyTooltip>
+                      </div>
+                    </div>
+                    <p className="text-gray-300 text-sm leading-relaxed font-sans pl-1">
+                      {comment?.comment}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </main>
       </div>
+
+      <AddCommentModal
+        onClose={onClose}
+        pages={pages?.data}
+        pageId={pageDetails?.data?._id}
+        handleAddComment={handleAddComment}
+        open={show.state && show.type === 'add-comment'}
+        loading={loading.type === 'add-comment' && loading.state}
+      />
+
+      <EditCommentModal
+        onClose={onClose}
+        commentDetails={show?.data?.comment}
+        handleUpdateComment={handleUpdateComment}
+        open={show.state && show.type === 'edit-comment'}
+        loading={loading.type === 'edit-comment' && loading.state}
+      />
+
+      <DeleteConfirmationModal
+        onClose={onClose}
+        onDelete={handleDeleteComment}
+        msg={`Comment : ${show?.data?.name}`}
+        open={show.state && show.type === 'delete-comment'}
+        loading={loading.state && loading.type === 'delete-comment'}
+      />
+
+      <JsonPreviewModal
+        onClose={onClose}
+        jsonData={show?.data?.json}
+        open={show.state && show.type === 'preview-json'}
+      />
+
       <Toaster />
     </>
   );
