@@ -1,25 +1,27 @@
 'use client';
-import {
-  Edit,
-  Trash2,
-  Loader2,
-  SquareTerminal,
-  SquareArrowOutUpRight,
-} from 'lucide-react';
 import moment from 'moment';
 import Link from 'next/link';
+import {
+  MyTooltip,
+  JsonPreviewModal,
+  DeleteConfirmationModal,
+} from '@/components/modals';
 import { show } from '@/types/index';
+import {
+  AddCommentModal,
+  EditCommentModal,
+} from '@/components/modals/comments';
+import {
+  addComment,
+  listComments,
+  deleteComment,
+  updateComment,
+} from '@/lib/api-collection/comments';
 import { useEffect, useState } from 'react';
 import { TopBar } from '@/components/layout';
-import {
-  DeleteConfirmationModal,
-  JsonPreviewModal,
-  MyTooltip,
-} from '@/components/modals';
 import toast, { Toaster } from 'react-hot-toast';
 import { listPages } from '@/lib/api-collection/pages';
-import AddCommentModal from '@/components/modals/comments/AddCommentModal';
-import EditCommentModal from '@/components/modals/comments/EditCommentModal';
+import { Edit, Trash2, Loader2, SquareTerminal } from 'lucide-react';
 
 function Pages() {
   //
@@ -48,12 +50,91 @@ function Pages() {
       });
   };
 
+  const handleListComments = () => {
+    setComments({ loading: true, data: [] });
+    listComments()
+      .then((res) => {
+        setComments({ data: res.data, loading: false });
+      })
+      .catch((error: any) => {
+        //
+        const defaultMsg = 'Something went wrong';
+        const message = error?.response?.data?.message;
+
+        toast.error(message || defaultMsg);
+        setComments({ data: [], loading: false });
+      });
+  };
+
+  const handleAddComment = (formData: any) => {
+    setLoading({ type: 'add-comment', state: true });
+    addComment(formData)
+      .then((res) => {
+        handleListPages();
+        toast.success(res.message);
+        onClose();
+      })
+      .catch((error: any) => {
+        //
+        const defaultMsg = 'Something went wrong';
+        const message = error?.response?.data?.message;
+
+        toast.error(message || defaultMsg);
+      })
+      .finally(() => {
+        setLoading({ type: 'add-comment', state: false });
+      });
+  };
+
+  const handleDeleteComment = () => {
+    const pageId = show?.data?.id;
+    setLoading({ type: 'delete-comment', state: true });
+    deleteComment(pageId)
+      .then((res) => {
+        handleListComments();
+        toast.success(res.message);
+        onClose();
+      })
+      .catch((error: any) => {
+        //
+        const defaultMsg = 'Something went wrong';
+        const message = error?.response?.data?.message;
+
+        toast.error(message || defaultMsg);
+      })
+      .finally(() => {
+        setLoading({ type: 'delete-comment', state: false });
+      });
+  };
+
+  const handleUpdateComment = (formData: any) => {
+    setLoading({ type: 'edit-comment', state: true });
+    updateComment(formData)
+      .then((res) => {
+        handleListComments();
+        toast.success(res.message);
+        onClose();
+      })
+      .catch((error: any) => {
+        //
+        const defaultMsg = 'Something went wrong';
+        const message = error?.response?.data?.message;
+
+        toast.error(message || defaultMsg);
+      })
+      .finally(() => {
+        setLoading({ type: 'edit-comment', state: false });
+      });
+  };
+
   const handleRefresh = () => {
     handleListPages();
+    handleListComments();
   };
 
   useEffect(() => {
     handleListPages();
+    handleListComments();
   }, []);
 
   useEffect(() => {
@@ -84,7 +165,7 @@ function Pages() {
                   <tr>
                     <th className="px-6 py-3 w-12.5">#</th>
                     <th className="px-6 py-3">Name</th>
-                    <th className="px-6 py-3 cursor-pointer">Views</th>
+                    <th className="px-6 py-3 cursor-pointer">Comment</th>
                     <th className="px-6 py-3 cursor-pointer">Created At</th>
                     <th className="px-6 py-3">Actions</th>
                   </tr>
@@ -104,7 +185,7 @@ function Pages() {
                             {comment?.name}
                           </Link>
                         </td>
-                        <td className="px-6 py-4">{comment?.views}</td>
+                        <td className="px-6 py-4">{comment?.comment}</td>
 
                         <td className="px-6 py-4">
                           {moment(comment?.createdAt).format(
@@ -113,15 +194,13 @@ function Pages() {
                         </td>
 
                         <td className="px-6 py-4 text-green-400 flex items-center gap-4">
-                          <MyTooltip content="Edit Page">
+                          <MyTooltip content="Edit Comment">
                             <Edit
                               onClick={() => {
                                 setShow({
                                   state: true,
-                                  type: 'edit-page',
+                                  type: 'edit-comment',
                                   data: {
-                                    id: comment?._id,
-                                    name: comment?.name,
                                     comment,
                                   },
                                 });
@@ -130,7 +209,7 @@ function Pages() {
                             />
                           </MyTooltip>
 
-                          <MyTooltip content="View Page Details">
+                          <MyTooltip content="View Comment Details">
                             <SquareTerminal
                               onClick={() => {
                                 setShow({
@@ -145,19 +224,15 @@ function Pages() {
                             />
                           </MyTooltip>
 
-                          <MyTooltip content="Open Page">
-                            <SquareArrowOutUpRight className="w-5 h-5 text-gray-400 cursor-pointer" />
-                          </MyTooltip>
-
-                          <MyTooltip content="Delete Page">
+                          <MyTooltip content="Delete Comment">
                             <Trash2
                               onClick={() => {
                                 setShow({
                                   state: true,
-                                  type: 'delete-page',
+                                  type: 'delete-comment',
                                   data: {
                                     id: comment?._id,
-                                    name: comment?.name,
+                                    comment: comment?.comment,
                                   },
                                 });
                               }}
@@ -174,7 +249,7 @@ function Pages() {
                         className="px-6 py-4 uppercase text-center font-bold"
                         colSpan={7}
                       >
-                        no pages available
+                        no comments available
                       </td>
                     </tr>
                   )}
@@ -187,7 +262,7 @@ function Pages() {
                       >
                         <div className="flex justify-center items-center">
                           <Loader2 className="animate-spin mr-2 w-4 h-4" />
-                          loading pages
+                          loading comments
                         </div>
                       </td>
                     </tr>
@@ -202,7 +277,7 @@ function Pages() {
       <AddCommentModal
         onClose={onClose}
         pages={pages?.data}
-        handleAddComment={() => {}}
+        handleAddComment={handleAddComment}
         open={show.state && show.type === 'add-comment'}
         loading={loading.type === 'add-comment' && loading.state}
       />
@@ -210,15 +285,15 @@ function Pages() {
       <EditCommentModal
         onClose={onClose}
         commentDetails={show?.data?.comment}
-        handleUpdateComment={() => {}}
+        handleUpdateComment={handleUpdateComment}
         open={show.state && show.type === 'edit-comment'}
         loading={loading.type === 'edit-comment' && loading.state}
       />
 
       <DeleteConfirmationModal
         onClose={onClose}
-        onDelete={() => {}}
-        msg={`page : ${show?.data?.name}`}
+        onDelete={handleDeleteComment}
+        msg={`Comment : ${show?.data?.name}`}
         open={show.state && show.type === 'delete-comment'}
         loading={loading.state && loading.type === 'delete-comment'}
       />

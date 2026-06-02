@@ -64,7 +64,7 @@ function EditCommentModal({
     return (
       <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
         <div className="bg-[#17181c] rounded-lg w-full max-w-md p-6 max-h-screen overflow-y-auto">
-          <h2 className="text-lg mb-4">Add Page</h2>
+          <h2 className="text-lg mb-4">Edit Comment</h2>
 
           <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
             {/* Name */}

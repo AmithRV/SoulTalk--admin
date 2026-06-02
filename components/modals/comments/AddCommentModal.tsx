@@ -41,6 +41,7 @@ function AddCommentModal({
   const onSubmit = (formData: Inputs) => {
     const data = {
       name: formData?.name,
+      pageId: formData?.pageId,
       comment: formData?.comment,
     };
     handleAddComment(data);
