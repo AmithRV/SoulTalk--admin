@@ -179,6 +179,7 @@ function Pages() {
                     >
                       Views
                     </th>
+                    <th className="px-6 py-3">Comments</th>
                     <th
                       className="px-6 py-3 cursor-pointer"
                       onClick={() => handleSort('createdAt')}
@@ -210,6 +211,9 @@ function Pages() {
                           </Link>
                         </td>
                         <td className="px-6 py-4">{page?.views}</td>
+                        <td className="px-6 py-4">
+                          {page?.comments?.length || 0}
+                        </td>
 
                         <td className="px-6 py-4">
                           {moment(page?.createdAt).format('DD-MMM-YY hh:mm A')}
