@@ -1,12 +1,12 @@
 'use client';
 import {
   Edit,
+  Menu,
   Trash2,
   Loader2,
+  RefreshCcw,
   SquareTerminal,
   SquareArrowOutUpRight,
-  RefreshCcw,
-  Menu,
 } from 'lucide-react';
 import moment from 'moment';
 import Link from 'next/link';
@@ -15,6 +15,7 @@ import {
   JsonPreviewModal,
   DeleteConfirmationModal,
 } from '@/components/modals';
+import { cn } from '@/lib/utils';
 import {
   addPages,
   listPages,
@@ -26,7 +27,6 @@ import { useEffect, useState } from 'react';
 import { TopBar } from '@/components/layout';
 import toast, { Toaster } from 'react-hot-toast';
 import { AddPageModal, EditPageModal } from '@/components/modals/Page';
-import { cn } from '@/lib/utils';
 
 function Pages() {
   //
