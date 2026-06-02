@@ -4,18 +4,22 @@ import { useForm } from 'react-hook-form';
 
 type Inputs = {
   name: string;
+  pageId: string;
   comment: string;
 };
 
 type props = {
+  pages: any[];
   open: boolean;
   loading: boolean;
   onClose: () => void;
   handleAddComment: (formData: any) => void;
 };
+
 function AddCommentModal({
   open,
   onClose,
+  pages = [],
   handleAddComment,
   loading = false,
 }: props) {
@@ -26,7 +30,13 @@ function AddCommentModal({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>();
+  } = useForm<Inputs>({
+    defaultValues: {
+      name: '',
+      pageId: '',
+      comment: '',
+    },
+  });
 
   const onSubmit = (formData: Inputs) => {
     const data = {
@@ -48,11 +58,45 @@ function AddCommentModal({
 
   if (open) {
     return (
-      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 ">
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 overflow-hidden">
         <div className="bg-[#17181c] rounded-lg w-[50%] p-6 max-h-screen overflow-y-auto">
           <h2 className="text-lg mb-4">Add Comment</h2>
 
           <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+            {/* Name */}
+            <div>
+              <label className="text-sm text-gray-400">Page</label>
+              <select
+                {...register('pageId', {
+                  required: '*page is required',
+                })}
+                className={cn(
+                  'w-full mt-1 bg-[#2a2b30] p-2 rounded outline-none',
+                  {
+                    'input-error': errors.pageId,
+                  },
+                )}
+                defaultValue=""
+              >
+                <option value="" disabled>
+                  Select a page
+                </option>
+                {pages?.map((page) => (
+                  <option
+                    key={page?._id}
+                    value={page?._id}
+                    className="cursor-pointer"
+                  >
+                    {page?.name}
+                  </option>
+                ))}
+              </select>
+
+              {errors.pageId && (
+                <span className="form-error">{errors.pageId.message}</span>
+              )}
+            </div>
+
             {/* Name */}
             <div>
               <label className="text-sm text-gray-400">Name</label>

@@ -201,6 +201,7 @@ function Pages() {
 
       <AddCommentModal
         onClose={onClose}
+        pages={pages?.data}
         handleAddComment={() => {}}
         open={show.state && show.type === 'add-comment'}
         loading={loading.type === 'add-comment' && loading.state}
