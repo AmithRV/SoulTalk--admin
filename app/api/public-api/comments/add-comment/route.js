@@ -20,9 +20,9 @@ export async function POST(request) {
   try {
     const reqBody = await request.json();
 
-    const { id } = reqBody;
+    const { name, pageId, comment } = reqBody;
 
-    const pageExists = await Page.findById(id);
+    const pageExists = await Page.findById(pageId);
 
     if (!pageExists) {
       return NextResponse.json(
