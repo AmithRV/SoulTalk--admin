@@ -150,6 +150,8 @@ function Pages() {
     handleListPages();
   }, []);
 
+  console.log('pages : ', pages);
+
   return (
     <>
       <main className="flex-1 flex flex-col">
@@ -161,7 +163,11 @@ function Pages() {
           handleRefresh={handleRefresh}
           loading={pages?.loading}
         />
-
+        <p className="pl-4 pt-4 text-purple-600 font-semibold">
+          {' '}
+          Total Views :{' '}
+          {pages?.data?.reduce((sum, item: any) => sum + item.views, 0)}
+        </p>
         {/* Center Content */}
         <div className="bg-[#1e1f23] text-white min-h-auto p-4">
           <div className="bg-[#17181c] rounded-lg shadow-lg overflow-hidden">
