@@ -8,61 +8,28 @@ import {
 } from 'lucide-react';
 import moment from 'moment';
 import Link from 'next/link';
-import {
-  MyTooltip,
-  JsonPreviewModal,
-  DeleteConfirmationModal,
-} from '@/components/modals';
-import {
-  addPages,
-  listPages,
-  deletePage,
-  updatePage,
-} from '@/lib/api-collection/pages';
 import { show } from '@/types/index';
 import { useEffect, useState } from 'react';
 import { TopBar } from '@/components/layout';
+import {
+  DeleteConfirmationModal,
+  JsonPreviewModal,
+  MyTooltip,
+} from '@/components/modals';
 import toast, { Toaster } from 'react-hot-toast';
-import { AddPageModal, EditPageModal } from '@/components/modals/Page';
+import { listPages } from '@/lib/api-collection/pages';
+import AddCommentModal from '@/components/modals/comments/AddCommentModal';
+import EditCommentModal from '@/components/modals/comments/EditCommentModal';
 
 function Pages() {
   //
   const [pages, setPages] = useState({ loading: true, data: [] });
-  const [loading, setLoading] = useState({ type: '', state: false });
   const [show, setShow] = useState<show>({ state: false, type: '' });
+  const [loading, setLoading] = useState({ type: '', state: false });
+  const [comments, setComments] = useState({ loading: true, data: [] });
 
   const onClose = () => {
     setShow({ state: false, type: '' });
-  };
-
-  const handleSort = (type: string) => {
-    // 1. Create a shallow copy of the data array to avoid mutating React state directly
-    const sortedData = [...pages.data].sort((a: any, b: any) => {
-      const valueA = a[type];
-      const valueB = b[type];
-
-      // Safety check for undefined properties
-      if (valueA === undefined || valueB === undefined) return 0;
-
-      // 2. Handle Numbers (e.g., sorting by 'views')
-      if (typeof valueA === 'number' && typeof valueB === 'number') {
-        return valueA - valueB; // Ascending order
-      }
-
-      // 3. Handle Strings and Date Strings (e.g., sorting by 'name' or 'createdAt')
-      if (typeof valueA === 'string' && typeof valueB === 'string') {
-        // localeCompare handles alphabetical sorting and works perfectly for ISO date strings too
-        return valueA.localeCompare(valueB);
-      }
-
-      return 0;
-    });
-
-    // 4. Update the state while preserving the 'loading' flag
-    setPages((prevPages) => ({
-      ...prevPages,
-      data: sortedData,
-    }));
   };
 
   const handleListPages = () => {
@@ -81,67 +48,6 @@ function Pages() {
       });
   };
 
-  const handleAddPage = (formData: any) => {
-    setLoading({ type: 'add-page', state: true });
-    addPages(formData)
-      .then((res) => {
-        handleListPages();
-        toast.success(res.message);
-        onClose();
-      })
-      .catch((error: any) => {
-        //
-        const defaultMsg = 'Something went wrong';
-        const message = error?.response?.data?.message;
-
-        toast.error(message || defaultMsg);
-      })
-      .finally(() => {
-        setLoading({ type: 'add-page', state: false });
-      });
-  };
-
-  const handleDeletePage = () => {
-    const pageId = show?.data?.id;
-    setLoading({ type: 'delete-page', state: true });
-    deletePage(pageId)
-      .then((res) => {
-        handleListPages();
-        toast.success(res.message);
-        onClose();
-      })
-      .catch((error: any) => {
-        //
-        const defaultMsg = 'Something went wrong';
-        const message = error?.response?.data?.message;
-
-        toast.error(message || defaultMsg);
-      })
-      .finally(() => {
-        setLoading({ type: 'delete-page', state: false });
-      });
-  };
-
-  const handleUpdatePage = (formData: any) => {
-    setLoading({ type: 'edit-page', state: true });
-    updatePage(formData)
-      .then((res) => {
-        handleListPages();
-        toast.success(res.message);
-        onClose();
-      })
-      .catch((error: any) => {
-        //
-        const defaultMsg = 'Something went wrong';
-        const message = error?.response?.data?.message;
-
-        toast.error(message || defaultMsg);
-      })
-      .finally(() => {
-        setLoading({ type: 'edit-page', state: false });
-      });
-  };
-
   const handleRefresh = () => {
     handleListPages();
   };
@@ -150,16 +56,21 @@ function Pages() {
     handleListPages();
   }, []);
 
+  useEffect(() => {
+    console.clear();
+    console.log('pages : ', pages);
+    console.log('comments : ', comments);
+  }, [comments, pages]);
   return (
     <>
       <main className="flex-1 flex flex-col">
         <TopBar
-          label="Pages"
+          label="Comments"
           setShow={setShow}
-          btnlabel="Add Page"
-          actionType="add-page"
+          btnlabel="Add Comment"
+          actionType="add-comment"
           handleRefresh={handleRefresh}
-          loading={pages?.loading}
+          loading={comments?.loading}
         />
 
         {/* Center Content */}
@@ -173,50 +84,34 @@ function Pages() {
                   <tr>
                     <th className="px-6 py-3 w-12.5">#</th>
                     <th className="px-6 py-3">Name</th>
-                    <th
-                      className="px-6 py-3 cursor-pointer"
-                      onClick={() => handleSort('views')}
-                    >
-                      Views
-                    </th>
-                    <th
-                      className="px-6 py-3 cursor-pointer"
-                      onClick={() => handleSort('createdAt')}
-                    >
-                      Created At
-                    </th>
-                    <th
-                      className="px-6 py-3 cursor-pointer"
-                      onClick={() => handleSort('updatedAt')}
-                    >
-                      Updated At
-                    </th>
+                    <th className="px-6 py-3 cursor-pointer">Views</th>
+                    <th className="px-6 py-3 cursor-pointer">Created At</th>
                     <th className="px-6 py-3">Actions</th>
                   </tr>
                 </thead>
 
                 <tbody className="divide-y divide-gray-700">
-                  {!pages?.loading &&
-                    pages?.data?.length > 0 &&
-                    pages?.data.map((page: any, index) => (
-                      <tr key={page?._id} className="hover:bg-[#2a2b30]">
+                  {!comments?.loading &&
+                    comments?.data?.length > 0 &&
+                    comments?.data.map((comment: any, index) => (
+                      <tr key={comment?._id} className="hover:bg-[#2a2b30]">
                         <td className="px-6 py-4 w-12.5">{index + 1}</td>
                         <td className="px-6 py-4 ">
                           <Link
                             className="border-b border-dotted"
-                            href={`/pages/${page?._id}`}
+                            href={`/pages/${comment?._id}`}
                           >
-                            {page?.name}
+                            {comment?.name}
                           </Link>
                         </td>
-                        <td className="px-6 py-4">{page?.views}</td>
+                        <td className="px-6 py-4">{comment?.views}</td>
 
                         <td className="px-6 py-4">
-                          {moment(page?.createdAt).format('DD-MMM-YY hh:mm A')}
+                          {moment(comment?.createdAt).format(
+                            'DD-MMM-YY hh:mm A',
+                          )}
                         </td>
-                        <td className="px-6 py-4">
-                          {moment(page?.updatedAt).format('DD-MMM-YY hh:mm A')}
-                        </td>
+
                         <td className="px-6 py-4 text-green-400 flex items-center gap-4">
                           <MyTooltip content="Edit Page">
                             <Edit
@@ -225,9 +120,9 @@ function Pages() {
                                   state: true,
                                   type: 'edit-page',
                                   data: {
-                                    id: page?._id,
-                                    name: page?.name,
-                                    page,
+                                    id: comment?._id,
+                                    name: comment?.name,
+                                    comment,
                                   },
                                 });
                               }}
@@ -242,7 +137,7 @@ function Pages() {
                                   state: true,
                                   type: 'preview-json',
                                   data: {
-                                    json: page,
+                                    json: comment,
                                   },
                                 });
                               }}
@@ -251,15 +146,7 @@ function Pages() {
                           </MyTooltip>
 
                           <MyTooltip content="Open Page">
-                            <SquareArrowOutUpRight
-                              onClick={() => {
-                                window.open(
-                                  `${process.env.NEXT_PUBLIC_DOMAIN}/${page?.publicUrl}`,
-                                  '_blank',
-                                );
-                              }}
-                              className="w-5 h-5 text-gray-400 cursor-pointer"
-                            />
+                            <SquareArrowOutUpRight className="w-5 h-5 text-gray-400 cursor-pointer" />
                           </MyTooltip>
 
                           <MyTooltip content="Delete Page">
@@ -269,8 +156,8 @@ function Pages() {
                                   state: true,
                                   type: 'delete-page',
                                   data: {
-                                    id: page?._id,
-                                    name: page?.name,
+                                    id: comment?._id,
+                                    name: comment?.name,
                                   },
                                 });
                               }}
@@ -281,7 +168,7 @@ function Pages() {
                       </tr>
                     ))}
 
-                  {!pages?.loading && pages?.data?.length === 0 && (
+                  {!comments?.loading && comments?.data?.length === 0 && (
                     <tr className="hover:bg-[#2a2b30]">
                       <td
                         className="px-6 py-4 uppercase text-center font-bold"
@@ -292,7 +179,7 @@ function Pages() {
                     </tr>
                   )}
 
-                  {pages?.loading && (
+                  {comments?.loading && (
                     <tr className="hover:bg-[#2a2b30]">
                       <td
                         className="w-full px-6 py-4 uppercase text-center font-bold"
@@ -312,27 +199,27 @@ function Pages() {
         </div>
       </main>
 
-      <AddPageModal
+      <AddCommentModal
         onClose={onClose}
-        handleAddPage={handleAddPage}
-        open={show.state && show.type === 'add-page'}
-        loading={loading.type === 'add-page' && loading.state}
+        handleAddComment={() => {}}
+        open={show.state && show.type === 'add-comment'}
+        loading={loading.type === 'add-comment' && loading.state}
       />
 
-      <EditPageModal
+      <EditCommentModal
         onClose={onClose}
-        pageDetails={show?.data?.page}
-        handleUpdatePage={handleUpdatePage}
-        open={show.state && show.type === 'edit-page'}
-        loading={loading.type === 'edit-page' && loading.state}
+        commentDetails={show?.data?.comment}
+        handleUpdateComment={() => {}}
+        open={show.state && show.type === 'edit-comment'}
+        loading={loading.type === 'edit-comment' && loading.state}
       />
 
       <DeleteConfirmationModal
         onClose={onClose}
-        onDelete={handleDeletePage}
+        onDelete={() => {}}
         msg={`page : ${show?.data?.name}`}
-        open={show.state && show.type === 'delete-page'}
-        loading={loading.state && loading.type === 'delete-page'}
+        open={show.state && show.type === 'delete-comment'}
+        loading={loading.state && loading.type === 'delete-comment'}
       />
 
       <JsonPreviewModal
@@ -340,6 +227,7 @@ function Pages() {
         jsonData={show?.data?.json}
         open={show.state && show.type === 'preview-json'}
       />
+
       <Toaster />
     </>
   );

@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JB8VEN861P"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-JB8VEN861P');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+
+    <!-- Open Graph (For Facebook, LinkedIn, WhatsApp, etc.): -->
+    <meta property="og:title" content="The Sea and the Sand">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="https://soultalk.blog/public/assets/the-sea-and-the-sand.png">
+    <meta property="og:url" content="https://soultalk.blog/stories/the-sea-and-the-sand">
+
+    <!-- Twitter Cards (For X/Twitter): -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="The Sea and the Sand">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:image" content="https://soultalk.blog/public/assets/the-sea-and-the-sand.png">
+
+    <link rel="canonical" href="https://soultalk.blog/">
+
+    <title>Title</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            base: '#0B0D12',
+                            surface: '#1A1D24',
+                            accent: '#a855f7',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body
+    class="bg-brand-base text-gray-200 font-sans antialiased overflow-x-hidden selection:bg-brand-accent/30 selection:text-white">
+    <!-- Navigation Bar -->
+    <nav
+        class="fixed w-full z-50 bg-brand-base/90 px-4 md:px-8 h-20 flex items-center justify-between transition-all backdrop-blur-md border-b border-white/5">
+        <div class="flex items-center gap-8">
+            <!-- Logo -->
+            <a href="/"
+                class="text-2xl font-serif font-bold text-white tracking-tight flex items-center gap-2 hover:text-brand-accent transition-colors">
+
+                <div><span>Soul</span><span class="text-[#a855f7]">Talk</span></div>
+
+            </a>
+        </div>
+
+        <!-- SHARE BUTTON -->
+        <button id="share-btn"
+            class="bg-white/10 text-white px-4 py-3 rounded-full font-bold text-sm hover:bg-white/20 transition border border-white/20 flex items-center gap-2 backdrop-blur-sm">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z">
+                </path>
+            </svg>
+            <span>Share</span>
+        </button>
+    </nav>
+
+    <!-- Story Hero Section -->
+    <header
+        class="relative w-full pt-20 flex flex-col items-center justify-center min-h-[50vh] border-b border-gray-800">
+        <!-- Abstract Atmospheric Background -->
+        <div class="absolute inset-0 z-0 overflow-hidden">
+            <div
+                class="absolute top-[-20%] left-[-10%] w-[50%] h-[150%] bg-indigo-900/20 blur-[120px] rounded-full pointer-events-none">
+            </div>
+            <div
+                class="absolute top-[20%] right-[-10%] w-[40%] h-full bg-purple-900/20 blur-[100px] rounded-full pointer-events-none">
+            </div>
+            <div class="absolute inset-0 bg-linear-to-b from-transparent via-brand-base/80 to-brand-base"></div>
+        </div>
+
+        <div class="relative z-10 max-w-3xl w-full px-6 py-16 text-center">
+
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-extrabold text-white mb-6 leading-tight">
+                A Miracle at the End of Patience
+            </h1>
+
+
+            <!-- Audio Player Quick Action -->
+
+            <div class="flex items-center justify-center gap-4 mx-auto max-w-fit">
+
+                <button id="audio-btn"
+                    class="bg-white text-black px-6 py-3 rounded-full font-bold text-sm hover:bg-gray-200 transition flex items-center gap-3 shadow-[0_0_30px_rgba(255,255,255,0.1)]">
+
+                    <span id="audio-icon">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z">
+                            </path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </span>
+
+                    <span id="audio-text">Listen to Audio Narration</span>
+                </button>
+
+                <button id="speed-btn" aria-label="Change playback speed"
+                    class="hidden bg-gray-100 text-gray-700 px-4 py-3 rounded-full font-bold text-sm hover:bg-gray-200 transition border border-gray-200">
+                    1x
+                </button>
+
+            </div>
+
+            <audio id="story-audio" src="/audio-stories/the-sea-and-the-sand.mp3"></audio>
+        </div>
+
+    </header>
+
+
+    <!-- Main Story Content -->
+    <main class="px-6 py-12 pt-6 md:py-16">
+        <article class="max-w-2xl mx-auto font-serif text-lg md:text-xl text-gray-300 leading-loose md:leading-loose">
+            <div class="w-full flex justify-center mb-6">
+                <div class="w-full rounded-xl overflow-hidden">
+                    <img src="/public/assets/the-sea-and-the-sand.png" alt="The Sea and the Sand"
+                        class="w-full h-full object-cover">
+                </div>
+            </div>
+            <p
+                class="mb-8 first-letter:text-6xl first-letter:font-bold first-letter:text-white first-letter:float-left first-letter:mr-3 first-letter:mt-1">
+                1
+            </p>
+
+            <!-- End Marker -->
+            <div class="flex justify-center mt-16 mb-8">
+                <div class="flex gap-2">
+                    <span class="w-2 h-2 rounded-full bg-brand-accent"></span>
+                    <span class="w-2 h-2 rounded-full bg-brand-accent"></span>
+                    <span class="w-2 h-2 rounded-full bg-brand-accent"></span>
+                </div>
+            </div>
+
+        </article>
+    </main>
+
+    <!-- Comments Section -->
+    <section class="border-t border-gray-800 bg-brand-base py-16">
+        <div class="max-w-2xl mx-auto px-6">
+            <h3 class="text-2xl font-serif font-bold text-white mb-8 flex items-center gap-3">
+                <svg class="w-6 h-6 text-brand-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+                    </path>
+                </svg>
+                Comments
+            </h3>
+
+            <!-- Comment Form -->
+            <form id="comment-form" class="mb-10 group">
+                <div class="mb-4">
+                    <label for="comment-name"
+                        class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Name</label>
+                    <input type="text" id="comment-name" required placeholder="Your name"
+                        class="w-full bg-brand-surface border border-gray-800 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-brand-accent/50 transition">
+                </div>
+                <div class="mb-4">
+                    <label for="comment-text"
+                        class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Comment</label>
+                    <textarea id="comment-text" rows="4" required placeholder="Share your thoughts on this story..."
+                        class="w-full bg-brand-surface border border-gray-800 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-brand-accent/50 transition resize-none"></textarea>
+                </div>
+                <button type="submit"
+                    class="bg-brand-accent text-white px-6 py-3 rounded-full font-bold text-sm hover:bg-purple-600 transition flex items-center gap-2">
+                    Post Comment
+                </button>
+            </form>
+
+
+
+            <!-- Comment From Author  -->
+            <div class="space-y-6">
+                <!-- Comment -->
+                <div class="bg-brand-surface border border-gray-800/60 p-5 rounded-2xl">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-8 h-8 rounded-full bg-purple-900/50 border border-brand-accent/30 flex items-center justify-center text-xs font-bold text-brand-accent">
+                                AR
+                            </div>
+                            <span class="font-bold text-white text-sm">Amith</span>
+                        </div>
+                        <span class="text-xs text-gray-500">2 hours ago</span>
+                    </div>
+                    <p class="text-gray-300 text-sm leading-relaxed font-sans pl-1">
+                        comment
+                    </p>
+                </div>
+            </div>
+
+            <!-- Rendered Comments List  -->
+            <div id="comments-container" class="space-y-6">
+                <div id="comments-loader" class="text-center py-6 text-gray-500 text-sm">
+                    Loading thoughts and reactions...
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Up Next Section -->
+    <section class="bg-brand-surface border-t border-gray-800 py-16">
+        <div class="max-w-3xl mx-auto px-6">
+            <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-6">Up Next in The Midnight Anthology
+            </h3>
+
+            <a href="#"
+                class="group block bg-brand-base rounded-2xl p-6 border border-gray-800 hover:border-gray-600 transition-all">
+                <div class="flex flex-col sm:flex-row gap-6 items-center sm:items-start">
+                    <img
+                        src="data:image/jpeg;base64,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" />
+
+                    <div class="grow text-center sm:text-left flex flex-col justify-center h-full">
+                        <span class="text-xs font-bold text-brand-accent mb-2 tracking-widest uppercase">Story 2</span>
+                        <h4
+                            class="text-2xl font-serif font-bold text-white mb-3 group-hover:text-brand-accent transition-colors">
+                            The Midnight Train to Nowhere</h4>
+                        <p class="text-gray-400 text-sm line-clamp-2 mb-4">Detective Miller had seen a lot of strange
+                            things, but an antique steam train arriving exactly on time at an abandoned station with no
+                            passengers was a first.</p>
+                        <div
+                            class="inline-flex items-center justify-center sm:justify-start gap-2 text-sm font-bold text-white group-hover:text-brand-accent transition-colors">
+                            Read Next <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <footer class="bg-black border-t border-gray-900 pt-16 pb-8">
+        <div class="max-w-400 mx-auto px-4 md:px-12 lg:px-20">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-600">
+                <p>&copy; 2026 Whispering Pages. All Rights Reserved.</p>
+                <div class="flex gap-4">
+                    <span>Read Anytime. Anywhere.</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        /* Hide scrollbar for the whole page to make it feel like an app, but retain scrolling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0B0D12;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #1A1D24;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #374151;
+        }
+    </style>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Elements
+            const audioBtn = document.getElementById("audio-btn");
+            const audioIcon = document.getElementById("audio-icon");
+            const audioText = document.getElementById("audio-text");
+            const storyAudio = document.getElementById("story-audio");
+            const speedBtn = document.getElementById("speed-btn");
+
+            // SVGs
+            const playSVG = `
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z">
+            </path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+    `;
+
+            const pauseSVG = `
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+    `;
+
+            // Time formatting helper
+            function formatTime(seconds) {
+                if (isNaN(seconds)) return "0:00";
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+            }
+
+            function updateTimeDisplay() {
+                const currentTime = formatTime(storyAudio.currentTime);
+                const totalTime = formatTime(storyAudio.duration);
+
+                if (storyAudio.paused) {
+                    audioText.textContent = `Paused (${currentTime} / ${totalTime})`;
+                } else {
+                    audioText.textContent = `${currentTime} / ${totalTime}`;
+                }
+            }
+
+            function setInitialState() {
+                audioIcon.innerHTML = playSVG;
+                audioText.textContent = "Listen to Audio Narration";
+                speedBtn.classList.add("hidden"); // Hide speed button when audio finishes
+            }
+
+            // --- PLAY/PAUSE LOGIC ---
+            audioBtn.addEventListener("click", function () {
+                if (storyAudio.paused) {
+                    storyAudio.play();
+                    audioIcon.innerHTML = pauseSVG;
+                    updateTimeDisplay();
+                    speedBtn.classList.remove("hidden"); // Show speed button when playing
+                } else {
+                    storyAudio.pause();
+                    audioIcon.innerHTML = playSVG;
+                    updateTimeDisplay();
+                    speedBtn.classList.add("hidden"); // Hide speed button when paused
+                }
+            });
+
+            storyAudio.addEventListener("timeupdate", function () {
+                if (!storyAudio.paused) {
+                    updateTimeDisplay();
+                }
+            });
+
+            storyAudio.addEventListener("ended", function () {
+                setInitialState();
+            });
+
+            // --- PLAYBACK SPEED LOGIC ---
+            const playbackSpeeds = [1, 1.25, 1.5, 1.75, 2];
+            let currentSpeedIndex = 0;
+
+            speedBtn.addEventListener("click", function () {
+                // Move to the next speed index, looping back to 0 if at the end
+                currentSpeedIndex = (currentSpeedIndex + 1) % playbackSpeeds.length;
+
+                // Get the new speed
+                const newSpeed = playbackSpeeds[currentSpeedIndex];
+
+                // Apply it to the audio element
+                storyAudio.playbackRate = newSpeed;
+
+                // Update the button text (e.g., "1.75x")
+                speedBtn.textContent = newSpeed + "x";
+            });
+        });
+    </script>
+
+    <script>
+        const UPDATE_API_URL =
+            'https://soul-talk-admin.vercel.app/api/public-api/update-views';
+
+        fetch(UPDATE_API_URL, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: ''
+            })
+        })
+    </script>
+
+    <script>
+        // --- SHARE BUTTON LOGIC ---
+        const shareBtn = document.getElementById("share-btn");
+        const shareTextSpan = shareBtn.querySelector("span");
+        const originalShareText = shareTextSpan.textContent;
+
+        shareBtn.addEventListener("click", async function () {
+            // The data you want to share
+            const shareData = {
+                title: document.title,
+                text: "Read this beautiful story on SoulTalk: " + document.title,
+                url: window.location.href
+            };
+
+            // Check if the browser supports the native Web Share API (mostly mobile)
+            if (navigator.share) {
+                try {
+                    await navigator.share(shareData);
+                } catch (err) {
+                    // User cancelled the share or it failed silently
+                    console.log("Share cancelled or failed:", err);
+                }
+            } else {
+                // Fallback for desktop browsers: Copy link to clipboard
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    shareTextSpan.textContent = "Link Copied!";
+                    shareBtn.classList.add("bg-green-500/20", "border-green-500/50", "text-green-400");
+
+                    // Reset button after 2.5 seconds
+                    setTimeout(() => {
+                        shareTextSpan.textContent = originalShareText;
+                        shareBtn.classList.remove("bg-green-500/20", "border-green-500/50", "text-green-400");
+                    }, 2500);
+                }).catch(err => {
+                    console.error('Failed to copy text: ', err);
+                });
+            }
+        });
+
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const COMMENTS_API_URL = 'https://soul-talk-admin.vercel.app/api/public-api/comments';
+
+            // Hardcoded structural story identifier based on URL configurations
+            const STORY_ID = 'the-sea-and-the-sand';
+
+            const commentForm = document.getElementById('comment-form');
+            const commentsContainer = document.getElementById('comments-container');
+            const submitBtn = document.getElementById('comment-submit-btn');
+
+            // --- FETCH & RENDER LOGIC ---
+            async function loadComments() {
+                try {
+                    const response = await fetch(`${COMMENTS_API_URL}?storyId=${STORY_ID}`);
+                    if (!response.ok) throw new Error('Network response error');
+
+                    const comments = await response.json();
+                    renderComments(comments);
+                } catch (error) {
+                    console.error('Could not load comments:', error);
+                    commentsContainer.innerHTML = `
+                        <div class="text-center py-4 text-red-400 text-sm">
+                            Unable to load discussion stream. Please try refreshing.
+                        </div>
+                    `;
+                }
+            }
+
+            function renderComments(comments) {
+                // Clear initial placeholder or prior states
+                commentsContainer.innerHTML = '';
+
+                if (!comments || comments.length === 0) {
+                    commentsContainer.innerHTML = `
+                        <div class="text-center py-8 text-gray-500 text-sm font-sans">
+                            No comments yet. Be the first to start the conversation!
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Append elements safely using standard UI layout rules
+                comments.forEach(item => {
+                    const initials = item.name ? item.name.substring(0, 2).toUpperCase() : 'AN';
+                    const timeString = item.createdAt ? new Date(item.createdAt).toLocaleDateString() : 'Just now';
+
+                    const commentEl = document.createElement('div');
+                    commentEl.className = 'bg-brand-surface border border-gray-800/60 p-5 rounded-2xl transition-all duration-300 opacity-0 transform translate-y-2';
+                    commentEl.innerHTML = `
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-purple-900/50 border border-brand-accent/30 flex items-center justify-center text-xs font-bold text-brand-accent">
+                                    ${escapeHTML(initials)}
+                                </div>
+                                <span class="font-bold text-white text-sm">${escapeHTML(item.name)}</span>
+                            </div>
+                            <span class="text-xs text-gray-500">${escapeHTML(timeString)}</span>
+                        </div>
+                        <p class="text-gray-300 text-sm leading-relaxed font-sans pl-1">
+                            ${escapeHTML(item.comment)}
+                        </p>
+                    `;
+
+                    commentsContainer.appendChild(commentEl);
+                    // Minimal micro-timeout to visually ease insertion element
+                    setTimeout(() => {
+                        commentEl.classList.remove('opacity-0', 'translate-y-2');
+                    }, 50);
+                });
+            }
+
+            // --- MUTATION & POST LOGIC ---
+            commentForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                const nameInput = document.getElementById('comment-name');
+                const textInput = document.getElementById('comment-text');
+
+                const payload = {
+                    storyId: STORY_ID,
+                    name: nameInput.value.trim(),
+                    comment: textInput.value.trim()
+                };
+
+                // Form mutation state adjustments
+                submitBtn.disabled = true;
+                const originalBtnText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<span>Sending...</span>';
+
+                try {
+                    const response = await fetch(COMMENTS_API_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) throw new Error('Post execution failed');
+
+                    // Reset context on successful execution stream
+                    commentForm.reset();
+
+                    // Reload container list array completely to accurately fetch new entries
+                    await loadComments();
+
+                } catch (error) {
+                    console.error('Submission error encountered:', error);
+                    alert('There was an issue processing your comment. Please attempt again.');
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnText;
+                }
+            });
+
+            // Prevent XSS vulnerability inputs
+            function escapeHTML(str) {
+                return str ? str.replace(/[&<>'"]/g,
+                    tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+                ) : '';
+            }
+
+            // Fire up data routine explicitly on component mount loop
+            loadComments();
+        });
+    </script>
+</body>
+
+</html>

@@ -21,6 +21,7 @@ function Layout({
 
   const menu = [
     { name: 'Pages', link: '/', activeUrls: ['/', `/pages/${id}`] },
+    { name: 'Comments', link: '/comments', activeUrls: ['/comments'] },
   ];
   const onClose = () => {
     setShow({ state: false, type: '' });
