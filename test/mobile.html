@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoulTalk - Mobile Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom underline styling to match the screenshot */
+        .dashed-underline {
+            text-decoration: underline;
+            text-decoration-style: dashed;
+            text-decoration-color: #6b7280;
+            text-underline-offset: 4px;
+        }
+    </style>
+</head>
+
+<body class="bg-[#18181b] text-gray-200 font-sans min-h-screen flex flex-col">
+
+    <header class="flex justify-between items-center p-4 bg-[#202024] border-b border-[#2d2d33] sticky top-0 z-10">
+        <div class="text-xl font-semibold tracking-wide">SoulTalk</div>
+        <button
+            class="text-gray-400 hover:text-white p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600">
+            <i class="fas fa-bars text-lg"></i>
+        </button>
+    </header>
+
+    <main class="flex-1 p-4 max-w-lg mx-auto w-full">
+
+        <div class="flex flex-col gap-4 mb-6">
+            <h1 class="text-2xl font-medium text-white">Pages (2)</h1>
+
+            <div class="flex gap-3">
+                <button
+                    class="bg-[#9333ea] hover:bg-purple-600 text-white px-4 py-2.5 rounded-md font-medium text-sm flex-1 shadow-sm transition-colors">
+                    Add Page
+                </button>
+                <button
+                    class="bg-[#2563eb] hover:bg-blue-600 text-white px-4 py-2.5 rounded-md font-medium text-sm flex items-center justify-center gap-2 flex-1 shadow-sm transition-colors">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+        </div>
+
+        <div class="text-[#a855f7] font-medium mb-4 text-sm tracking-wide">
+            Total Views : 42
+        </div>
+
+        <div class="flex flex-col gap-4">
+
+            <div class="bg-[#202024] rounded-lg p-4 border border-[#2d2d33] shadow-sm">
+                <div class="flex justify-between items-start mb-3">
+                    <h2 class="text-base text-gray-100 dashed-underline leading-tight pr-4">Page-2</h2>
+                    <span class="text-xs font-mono text-gray-400 bg-[#2d2d33] px-2 py-1 rounded">#1</span>
+                </div>
+
+                <div class="flex gap-6 text-sm text-gray-400 mb-4 bg-[#18181b] p-3 rounded-md">
+                    <div class="flex flex-col">
+                        <span class="text-xs text-gray-500 uppercase tracking-wider mb-1">Views</span>
+                        <span class="text-gray-200 font-medium text-base">0</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-xs text-gray-500 uppercase tracking-wider mb-1">Comments</span>
+                        <span class="text-gray-200 font-medium text-base">0</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 text-xs text-gray-400 mb-4">
+                    <div>
+                        <span class="block text-gray-500 mb-1">Created At</span>
+                        <span class="text-gray-300">02-Jun-26</span><br>
+                        <span class="text-gray-300">02:04 PM</span>
+                    </div>
+                    <div>
+                        <span class="block text-gray-500 mb-1">Updated At</span>
+                        <span class="text-gray-300">02-Jun-26</span><br>
+                        <span class="text-gray-300">02:04 PM</span>
+                    </div>
+                </div>
+
+                <div class="flex gap-5 pt-3 border-t border-[#2d2d33] justify-end text-gray-400 text-lg">
+                    <button class="hover:text-white transition-colors" title="Edit"><i class="far fa-edit"></i></button>
+                    <button class="hover:text-white transition-colors" title="Console"><i
+                            class="fas fa-terminal"></i></button>
+                    <button class="hover:text-white transition-colors" title="Open Link"><i
+                            class="fas fa-external-link-alt"></i></button>
+                    <button class="hover:text-red-400 transition-colors" title="Delete"><i
+                            class="far fa-trash-alt"></i></button>
+                </div>
+            </div>
+
+            <div class="bg-[#202024] rounded-lg p-4 border border-[#2d2d33] shadow-sm">
+                <div class="flex justify-between items-start mb-3">
+                    <h2 class="text-base text-gray-100 dashed-underline leading-tight pr-4">On the Pleasure of
+                        Abandoning a Book Mid-Chapter</h2>
+                    <span class="text-xs font-mono text-gray-400 bg-[#2d2d33] px-2 py-1 rounded shrink-0">#2</span>
+                </div>
+
+                <div class="flex gap-6 text-sm text-gray-400 mb-4 bg-[#18181b] p-3 rounded-md">
+                    <div class="flex flex-col">
+                        <span class="text-xs text-gray-500 uppercase tracking-wider mb-1">Views</span>
+                        <span class="text-gray-200 font-medium text-base">42</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-xs text-gray-500 uppercase tracking-wider mb-1">Comments</span>
+                        <span class="text-gray-200 font-medium text-base">4</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 text-xs text-gray-400 mb-4">
+                    <div>
+                        <span class="block text-gray-500 mb-1">Created At</span>
+                        <span class="text-gray-300">11-May-26</span><br>
+                        <span class="text-gray-300">12:11 AM</span>
+                    </div>
+                    <div>
+                        <span class="block text-gray-500 mb-1">Updated At</span>
+                        <span class="text-gray-300">31-May-26</span><br>
+                        <span class="text-gray-300">03:09 PM</span>
+                    </div>
+                </div>
+
+                <div class="flex gap-5 pt-3 border-t border-[#2d2d33] justify-end text-gray-400 text-lg">
+                    <button class="hover:text-white transition-colors" title="Edit"><i class="far fa-edit"></i></button>
+                    <button class="hover:text-white transition-colors" title="Console"><i
+                            class="fas fa-terminal"></i></button>
+                    <button class="hover:text-white transition-colors" title="Open Link"><i
+                            class="fas fa-external-link-alt"></i></button>
+                    <button class="hover:text-red-400 transition-colors" title="Delete"><i
+                            class="far fa-trash-alt"></i></button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+
+</html>

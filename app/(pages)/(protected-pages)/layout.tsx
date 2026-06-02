@@ -42,7 +42,7 @@ function Layout({
     <>
       <div className="flex h-screen bg-[#1e1f23] text-white font-sans overflow-auto">
         {/* Sidebar */}
-        <aside className="w-64 bg-[#17181c] p-4 flex flex-col justify-between">
+        <aside className="w-64 bg-[#17181c] p-4 flex-col justify-between hidden md:flex">
           <div>
             <button className="w-full bg-[#2a2b30] hover:bg-[#34353b] text-left px-4 py-2 rounded-lg mb-4">
               SoulTalk
