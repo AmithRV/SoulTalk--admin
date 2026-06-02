@@ -200,28 +200,6 @@
                 </button>
             </form>
 
-
-
-            <!-- Comment From Author  -->
-            <div class="space-y-6">
-                <!-- Comment -->
-                <div class="bg-brand-surface border border-gray-800/60 p-5 rounded-2xl">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center gap-3">
-                            <div
-                                class="w-8 h-8 rounded-full bg-purple-900/50 border border-brand-accent/30 flex items-center justify-center text-xs font-bold text-brand-accent">
-                                AR
-                            </div>
-                            <span class="font-bold text-white text-sm">Amith</span>
-                        </div>
-                        <span class="text-xs text-gray-500">2 hours ago</span>
-                    </div>
-                    <p class="text-gray-300 text-sm leading-relaxed font-sans pl-1">
-                        comment
-                    </p>
-                </div>
-            </div>
-
             <!-- Rendered Comments List  -->
             <div id="comments-container" class="space-y-6">
                 <div id="comments-loader" class="text-center py-6 text-gray-500 text-sm">
@@ -450,10 +428,10 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const COMMENTS_API_URL = 'https://soul-talk-admin.vercel.app/api/public-api/comments';
+            const COMMENTS_API_URL = 'http://localhost:3000/api/public-api/comments/list-comments';
 
             // Hardcoded structural story identifier based on URL configurations
-            const STORY_ID = 'the-sea-and-the-sand';
+            const PAGE_ID = '6a00d17224d988dd4e39429b';
 
             const commentForm = document.getElementById('comment-form');
             const commentsContainer = document.getElementById('comments-container');
@@ -462,11 +440,12 @@
             // --- FETCH & RENDER LOGIC ---
             async function loadComments() {
                 try {
-                    const response = await fetch(`${COMMENTS_API_URL}?storyId=${STORY_ID}`);
+                    const response = await fetch(`${COMMENTS_API_URL}?pageId=${PAGE_ID}`);
                     if (!response.ok) throw new Error('Network response error');
 
                     const comments = await response.json();
-                    renderComments(comments);
+
+                    renderComments(comments.data.comments);
                 } catch (error) {
                     console.error('Could not load comments:', error);
                     commentsContainer.innerHTML = `
@@ -491,9 +470,9 @@
                 }
 
                 // Append elements safely using standard UI layout rules
-                comments.forEach(item => {
-                    const initials = item.name ? item.name.substring(0, 2).toUpperCase() : 'AN';
-                    const timeString = item.createdAt ? new Date(item.createdAt).toLocaleDateString() : 'Just now';
+                comments.forEach((comment) => {
+                    const initials = comment.name ? comment?.name.substring(0, 2).toUpperCase() : '';
+                    const timeString = comment?.createdAt ? new Date(comment?.createdAt).toLocaleDateString() : 'Just now';
 
                     const commentEl = document.createElement('div');
                     commentEl.className = 'bg-brand-surface border border-gray-800/60 p-5 rounded-2xl transition-all duration-300 opacity-0 transform translate-y-2';
@@ -503,12 +482,12 @@
                                 <div class="w-8 h-8 rounded-full bg-purple-900/50 border border-brand-accent/30 flex items-center justify-center text-xs font-bold text-brand-accent">
                                     ${escapeHTML(initials)}
                                 </div>
-                                <span class="font-bold text-white text-sm">${escapeHTML(item.name)}</span>
+                                <span class="font-bold text-white text-sm">${escapeHTML(comment?.name)}</span>
                             </div>
                             <span class="text-xs text-gray-500">${escapeHTML(timeString)}</span>
                         </div>
                         <p class="text-gray-300 text-sm leading-relaxed font-sans pl-1">
-                            ${escapeHTML(item.comment)}
+                            ${escapeHTML(comment?.comment)}
                         </p>
                     `;
 
