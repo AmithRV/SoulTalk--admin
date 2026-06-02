@@ -38,20 +38,11 @@ export async function GET(request) {
         );
       }
     }
-
-    // return NextResponse.json(
-    //   { message: 'page', data: { views: 1 } },
-    //   { status: 200 },
-    // );
   } catch (error) {
-    console.log('error : ', error);
-
     if (error.name === 'ZodError') {
       const message = formatZodErrors(error);
       return NextResponse.json({ message }, { status: 422 });
     } else {
-      console.log('error : ', error);
-
       return NextResponse.json({ message: error.message }, { status: 500 });
     }
   }

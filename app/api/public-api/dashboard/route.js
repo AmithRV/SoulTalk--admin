@@ -27,14 +27,10 @@ export async function GET() {
       { status: 200, headers: corsHeaders },
     );
   } catch (error) {
-    console.log('error : ', error);
-
     if (error.name === 'ZodError') {
       const message = formatZodErrors(error);
       return NextResponse.json({ message }, { status: 422 });
     } else {
-      console.log('error : ', error);
-
       return NextResponse.json({ message: error.message }, { status: 500 });
     }
   }

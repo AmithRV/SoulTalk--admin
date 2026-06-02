@@ -150,8 +150,6 @@ function Pages() {
     handleListPages();
   }, []);
 
-  console.log('pages : ', pages);
-
   return (
     <>
       <main className="flex-1 flex flex-col">
