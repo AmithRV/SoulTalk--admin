@@ -12,7 +12,7 @@ export async function POST(request) {
 
     const { name, pageId, comment } = addCommentSchema.parse(reqBody);
 
-    const newPage = await Comment.create({
+    const newComment = await Comment.create({
       name,
       comment,
       page: pageId,
@@ -20,7 +20,7 @@ export async function POST(request) {
 
     return NextResponse.json(
       {
-        page: newPage,
+        comment: newComment,
         message: 'comment Added',
       },
       { status: 200 },
