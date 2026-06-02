@@ -36,9 +36,10 @@ export async function POST(request) {
         comment,
         page: pageId,
       });
+      const comments = await Comment.find({ page: pageId });
 
       return NextResponse.json(
-        { comment: newComment, message: 'Comment Added.' },
+        { comment: newComment, comments, message: 'Comment Added.' },
         { status: 200, headers: corsHeaders },
       );
     }

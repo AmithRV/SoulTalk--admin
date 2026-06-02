@@ -12,6 +12,11 @@
         gtag('config', 'G-JB8VEN861P');
     </script>
 
+    <script>
+        // Explicitly defining a global variable
+        window.pageId = "6a00d17224d988dd4e39429b";
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -382,7 +387,7 @@
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                id: ''
+                id: pageId
             })
         })
     </script>
@@ -435,8 +440,6 @@
             const LIST_COMMENTS_API_URL = 'http://localhost:3000/api/public-api/comments/list-comments';
             const ADD_COMMENTS_API_URL = 'http://localhost:3000/api/public-api/comments/add-comment';
 
-            // Hardcoded structural story identifier based on URL configurations
-            const PAGE_ID = '6a00d17224d988dd4e39429b';
 
             const commentForm = document.getElementById('comment-form');
             const commentsContainer = document.getElementById('comments-container');
@@ -445,7 +448,7 @@
             // --- FETCH & RENDER LOGIC ---
             async function loadComments() {
                 try {
-                    const response = await fetch(`${LIST_COMMENTS_API_URL}?pageId=${PAGE_ID}`);
+                    const response = await fetch(`${LIST_COMMENTS_API_URL}?pageId=${pageId}`);
                     if (!response.ok) throw new Error('Network response error');
 
                     const comments = await response.json();
@@ -512,7 +515,7 @@
                 const textInput = document.getElementById('comment-text');
 
                 const payload = {
-                    pageId: PAGE_ID,
+                    pageId: pageId,
                     name: nameInput.value.trim(),
                     comment: textInput.value.trim()
                 };
@@ -533,11 +536,14 @@
 
                     if (!response.ok) throw new Error('Post execution failed');
 
+                    const comment = await response.json();
+
+                    renderComments(comment?.comments)
+
                     // Reset context on successful execution stream
                     commentForm.reset();
 
-                    // Reload container list array completely to accurately fetch new entries
-                    await loadComments();
+
 
                 } catch (error) {
                     console.error('Submission error encountered:', error);
