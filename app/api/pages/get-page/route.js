@@ -22,8 +22,6 @@ export async function GET(request) {
           { status: 404 },
         );
       } else {
-        const page = await Page.findById(id).sort({ createdAt: -1 });
-
         return NextResponse.json(
           { message: 'page', data: { page } },
           { status: 200 },

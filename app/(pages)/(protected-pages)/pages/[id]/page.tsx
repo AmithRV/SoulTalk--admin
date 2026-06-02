@@ -19,7 +19,7 @@ import {
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import { getPage, listPages } from '@/lib/api-collection/pages';
+import { getPage } from '@/lib/api-collection/pages';
 import { Edit, SquareTerminal, Trash2 } from 'lucide-react';
 
 function PageDetails() {
@@ -30,7 +30,6 @@ function PageDetails() {
     data: any;
     loading: boolean;
   }>({ data: {}, loading: false });
-  const [pages, setPages] = useState({ loading: true, data: [] });
   const [show, setShow] = useState<show>({ state: false, type: '' });
   const [loading, setLoading] = useState({ type: '', state: false });
   const [comments, setComments] = useState({ loading: true, data: [] });
@@ -52,22 +51,6 @@ function PageDetails() {
 
         toast.error(message || defaultMsg);
         setPageDetails({ data: [], loading: false });
-      });
-  };
-
-  const handleListPages = () => {
-    setPages({ loading: true, data: [] });
-    listPages()
-      .then((res) => {
-        setPages({ data: res.data, loading: false });
-      })
-      .catch((error: any) => {
-        //
-        const defaultMsg = 'Something went wrong';
-        const message = error?.response?.data?.message;
-
-        toast.error(message || defaultMsg);
-        setPages({ data: [], loading: false });
       });
   };
 
@@ -149,7 +132,6 @@ function PageDetails() {
   };
 
   useEffect(() => {
-    handleListPages();
     handleListComments();
     handleGetPageDetails();
   }, []);
@@ -397,7 +379,7 @@ function PageDetails() {
 
       <AddCommentModal
         onClose={onClose}
-        pages={pages?.data}
+        pages={[pageDetails?.data]}
         pageId={pageDetails?.data?._id}
         handleAddComment={handleAddComment}
         open={show.state && show.type === 'add-comment'}
