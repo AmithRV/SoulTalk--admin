@@ -321,7 +321,7 @@ function Pages() {
         </div>
       </main>
 
-      <main className="flex-1 p-4 max-w-lg mx-auto w-full overflow-y-auto flex md:hidden flex-col">
+      <main className="flex-1 p-4 max-w-lg mx-auto w-full overflow-y-auto flex md:hidden flex-col mt-16">
         <div className="flex flex-col gap-4 mb-6">
           <h1 className="text-2xl font-medium text-white">
             Pages ({pages?.data?.length || 0})
@@ -474,6 +474,17 @@ function Pages() {
                 </div>
               </div>
             ))}
+
+          {pages?.loading && (
+            <div className="hover:bg-[#2a2b30]">
+              <div className="w-full px-6 py-4 uppercase text-center font-bold">
+                <div className="flex justify-center items-center">
+                  <Loader2 className="animate-spin mr-2 w-4 h-4" />
+                  loading pages
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </main>
 

@@ -46,9 +46,9 @@ function Layout({
       <div className="h-screen bg-[#1e1f23] text-white font-sans overflow-auto flex ">
         {/* Sidebar */}
         <aside className="w-64 bg-[#17181c] p-4 flex-col justify-between hidden md:flex">
-          <div>
-            <button className="w-full bg-[#2a2b30] hover:bg-[#34353b] text-left px-4 py-2 rounded-lg mb-4">
-              SoulTalk
+          <div className="">
+            <button className="w-full bg-[#2a2b30] hover:bg-[#34353b] text-2xl font-serif font-bold text-left p-2 rounded-lg">
+              Soul<span className="text-[#a855f7]">Talk</span>
             </button>
 
             <div className="mt-6">
@@ -88,8 +88,10 @@ function Layout({
         </aside>
 
         <div className="w-screen">
-          <header className="flex justify-between items-center p-4 bg-[#202024] border-b border-[#2d2d33] sticky top-0 z-10  md:hidden">
-            <div className="text-xl font-semibold tracking-wide">SoulTalk</div>
+          <header className="flex justify-between items-center p-4 bg-[#202024] border-b border-[#2d2d33] fixed top-0 z-10  md:hidden w-full">
+            <div className="text-xl font-serif font-bold tracking-wide">
+              Soul<span className="text-[#a855f7]">Talk</span>
+            </div>
             <button
               onClick={() => setIsMobileNavOpen(true)}
               className="text-gray-400 hover:text-white p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600 cursor-pointer"

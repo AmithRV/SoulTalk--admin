@@ -68,7 +68,7 @@ function AddCommentModal({
   if (open) {
     return (
       <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 overflow-hidden">
-        <div className="bg-[#17181c] rounded-lg w-[50%] p-6 max-h-screen overflow-y-auto">
+        <div className="bg-[#17181c] rounded-lg p-6 max-h-screen overflow-y-auto">
           <h2 className="text-lg mb-4">Add Comment</h2>
 
           <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>

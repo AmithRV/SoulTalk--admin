@@ -13,7 +13,7 @@ export default function LogoutModal({
   if (open) {
     return (
       <div className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center">
-        <div className="bg-black/50 text-white rounded-2xl shadow-xl w-full max-w-sm p-6 text-center">
+        <div className="bg-black text-white rounded-2xl shadow-xl w-full max-w-sm p-6 text-center">
           {/* Icon */}
           <div className="mx-auto mb-4 w-12 h-12 flex items-center justify-center rounded-full bg-red-100">
             <svg
