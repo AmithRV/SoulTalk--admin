@@ -6,6 +6,8 @@ import { usePathname } from 'next/navigation';
 import { LogoutModal } from '@/components/modals';
 import { logout } from '@/lib/api-collection/auth';
 import { useParams, useRouter } from 'next/navigation';
+import { MobileBottomSheet } from '@/components/layout';
+import { Menu } from 'lucide-react';
 
 function Layout({
   children,
@@ -13,9 +15,10 @@ function Layout({
   children: React.ReactNode;
 }>) {
   const router = useRouter();
-  const pathname = usePathname();
   const { id } = useParams();
+  const pathname = usePathname();
 
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const [show, setShow] = useState<show>({ state: false, type: '' });
   const [loading, setLoading] = useState({ type: '', state: false });
 
@@ -40,7 +43,7 @@ function Layout({
 
   return (
     <>
-      <div className="flex h-screen bg-[#1e1f23] text-white font-sans overflow-auto">
+      <div className="h-screen bg-[#1e1f23] text-white font-sans overflow-auto flex ">
         {/* Sidebar */}
         <aside className="w-64 bg-[#17181c] p-4 flex-col justify-between hidden md:flex">
           <div>
@@ -84,13 +87,32 @@ function Layout({
           </div>
         </aside>
 
-        {children}
+        <div className="w-screen">
+          <header className="flex justify-between items-center p-4 bg-[#202024] border-b border-[#2d2d33] sticky top-0 z-10  md:hidden">
+            <div className="text-xl font-semibold tracking-wide">SoulTalk</div>
+            <button
+              onClick={() => setIsMobileNavOpen(true)}
+              className="text-gray-400 hover:text-white p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600 cursor-pointer"
+            >
+              <Menu />
+            </button>
+          </header>
+
+          {children}
+        </div>
       </div>
+
       <LogoutModal
         onClose={onClose}
         open={show.state && show.type === 'logout'}
         handleLogout={handleLogout}
         loading={loading.state && loading.type === 'logout'}
+      />
+
+      <MobileBottomSheet
+        setShow={setShow}
+        open={isMobileNavOpen}
+        setIsMobileNavOpen={setIsMobileNavOpen}
       />
     </>
   );

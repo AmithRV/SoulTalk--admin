@@ -1,3 +1,4 @@
 import TopBar from './TopBar';
+import MobileBottomSheet from './MobileBottomSheet';
 
-export { TopBar };
+export { TopBar, MobileBottomSheet };

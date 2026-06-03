@@ -1,7 +1,6 @@
 'use client';
 import {
   Edit,
-  Menu,
   Trash2,
   Loader2,
   RefreshCcw,
@@ -24,8 +23,8 @@ import {
 } from '@/lib/api-collection/pages';
 import { show } from '@/types/index';
 import { useEffect, useState } from 'react';
-import { TopBar } from '@/components/layout';
 import toast, { Toaster } from 'react-hot-toast';
+import { TopBar } from '@/components/layout';
 import { AddPageModal, EditPageModal } from '@/components/modals/Page';
 
 function Pages() {
@@ -322,174 +321,163 @@ function Pages() {
         </div>
       </main>
 
-      <div className="w-full bg-[#18181b] text-gray-200 font-sans min-h-screen flex md:hidden flex-col">
-        <header className="flex justify-between items-center p-4 bg-[#202024] border-b border-[#2d2d33] sticky top-0 z-10">
-          <div className="text-xl font-semibold tracking-wide">SoulTalk</div>
-          <button className="text-gray-400 hover:text-white p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600">
-            <Menu />
-          </button>
-        </header>
+      <main className="flex-1 p-4 max-w-lg mx-auto w-full overflow-y-auto flex md:hidden flex-col">
+        <div className="flex flex-col gap-4 mb-6">
+          <h1 className="text-2xl font-medium text-white">
+            Pages ({pages?.data?.length || 0})
+          </h1>
 
-        <main className="flex-1 p-4 max-w-lg mx-auto w-full overflow-y-auto">
-          <div className="flex flex-col gap-4 mb-6">
-            <h1 className="text-2xl font-medium text-white">
-              Pages ({pages?.data?.length || 0})
-            </h1>
-
-            <div className="flex gap-3">
-              <button
-                onClick={() => {
-                  setShow({ type: 'add-page', state: true });
-                }}
-                className="bg-[#9333ea] hover:bg-purple-600 text-white px-4 py-2.5 rounded-md font-medium text-sm flex-1 shadow-sm transition-colors cursor-pointer"
-              >
-                Add Page
-              </button>
-              <button
-                onClick={handleRefresh}
-                className="bg-[#2563eb] hover:bg-blue-600 text-white px-4 py-2.5 rounded-md font-medium text-sm flex items-center justify-center gap-2 flex-1 shadow-sm transition-colors cursor-pointer"
-              >
-                <RefreshCcw
-                  className={cn('w-4 h-4 mr-1', {
-                    'animate-spin': pages?.loading,
-                  })}
-                />
-                Refresh
-              </button>
-            </div>
+          <div className="flex gap-3">
+            <button
+              onClick={() => {
+                setShow({ type: 'add-page', state: true });
+              }}
+              className="bg-[#9333ea] hover:bg-purple-600 text-white px-4 py-2.5 rounded-md font-medium text-sm flex-1 shadow-sm transition-colors cursor-pointer"
+            >
+              Add Page
+            </button>
+            <button
+              onClick={handleRefresh}
+              className="bg-[#2563eb] hover:bg-blue-600 text-white px-4 py-2.5 rounded-md font-medium text-sm flex items-center justify-center gap-2 flex-1 shadow-sm transition-colors cursor-pointer"
+            >
+              <RefreshCcw
+                className={cn('w-4 h-4 mr-1', {
+                  'animate-spin': pages?.loading,
+                })}
+              />
+              Refresh
+            </button>
           </div>
+        </div>
 
-          <div className="text-[#a855f7] font-medium mb-4 text-sm tracking-wide">
-            Total Views :
-            {pages?.data?.reduce((sum, item: any) => sum + item.views, 0)}
-          </div>
+        <div className="text-[#a855f7] font-medium mb-4 text-sm tracking-wide">
+          Total Views :{' '}
+          {pages?.data?.reduce((sum, item: any) => sum + item.views, 0)}
+        </div>
 
-          <div className="flex flex-col gap-4">
-            {!pages?.loading &&
-              pages?.data?.length > 0 &&
-              pages?.data.map((page: any, index) => (
-                <div
-                  key={index}
-                  className="bg-[#202024] rounded-lg p-4 border border-[#2d2d33] shadow-sm"
-                >
-                  <div className="flex justify-between items-start mb-3">
-                    <h2 className="text-base text-gray-100 dashed-underline leading-tight pr-4">
-                      <Link
-                        className="border-b border-dotted"
-                        href={`/pages/${page?._id}`}
-                      >
-                        {page?.name}
-                      </Link>
-                    </h2>
-                    <span className="text-xs font-mono text-gray-400 bg-[#2d2d33] px-2 py-1 rounded">
-                      #{index + 1}
+        <div className="flex flex-col gap-4">
+          {!pages?.loading &&
+            pages?.data?.length > 0 &&
+            pages?.data.map((page: any, index) => (
+              <div
+                key={index}
+                className="bg-[#202024] rounded-lg p-4 border border-[#2d2d33] shadow-sm"
+              >
+                <div className="flex justify-between items-start mb-3">
+                  <h2 className="text-base text-gray-100 dashed-underline leading-tight pr-4">
+                    <Link
+                      className="border-b border-dotted"
+                      href={`/pages/${page?._id}`}
+                    >
+                      {page?.name}
+                    </Link>
+                  </h2>
+                  <span className="text-xs font-mono text-gray-400 bg-[#2d2d33] px-2 py-1 rounded">
+                    #{index + 1}
+                  </span>
+                </div>
+
+                <div className="flex gap-6 text-sm text-gray-400 mb-4 bg-[#18181b] p-3 rounded-md">
+                  <div className="flex flex-col">
+                    <span className="text-xs text-gray-500 uppercase tracking-wider mb-1">
+                      Views
+                    </span>
+                    <span className="text-gray-200 font-medium text-base">
+                      {page?.views}
                     </span>
                   </div>
-
-                  <div className="flex gap-6 text-sm text-gray-400 mb-4 bg-[#18181b] p-3 rounded-md">
-                    <div className="flex flex-col">
-                      <span className="text-xs text-gray-500 uppercase tracking-wider mb-1">
-                        Views
-                      </span>
-                      <span className="text-gray-200 font-medium text-base">
-                        {page?.views}
-                      </span>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-xs text-gray-500 uppercase tracking-wider mb-1">
-                        Comments
-                      </span>
-                      <span className="text-gray-200 font-medium text-base">
-                        {page?.comments?.length || 0}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4 text-xs text-gray-400 mb-4">
-                    <div>
-                      <span className="block text-gray-500 mb-1">
-                        Created At
-                      </span>
-                      <span className="text-gray-300">
-                        {moment(page?.createdAt).format('DD-MMM-YY hh:mm A')}
-                      </span>
-                    </div>
-                    <div>
-                      <span className="block text-gray-500 mb-1">
-                        Updated At
-                      </span>
-                      <span className="text-gray-300">
-                        {moment(page?.updatedAt).format('DD-MMM-YY hh:mm A')}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-5 pt-3 border-t border-[#2d2d33] justify-end text-gray-400 text-lg">
-                    <MyTooltip content="Edit Page">
-                      <Edit
-                        onClick={() => {
-                          setShow({
-                            state: true,
-                            type: 'edit-page',
-                            data: {
-                              id: page?._id,
-                              name: page?.name,
-                              page,
-                            },
-                          });
-                        }}
-                        className="w-5 h-5 text-gray-400 cursor-pointer"
-                      />
-                    </MyTooltip>
-
-                    <MyTooltip content="View Page Details">
-                      <SquareTerminal
-                        onClick={() => {
-                          setShow({
-                            state: true,
-                            type: 'preview-json',
-                            data: {
-                              json: page,
-                            },
-                          });
-                        }}
-                        className="w-5 h-5 text-gray-400 ursor-pointer cursor-pointer"
-                      />
-                    </MyTooltip>
-
-                    <MyTooltip content="Open Page">
-                      <SquareArrowOutUpRight
-                        onClick={() => {
-                          window.open(
-                            `${process.env.NEXT_PUBLIC_DOMAIN}/${page?.publicUrl}`,
-                            '_blank',
-                          );
-                        }}
-                        className="w-5 h-5 text-gray-400 cursor-pointer"
-                      />
-                    </MyTooltip>
-
-                    <MyTooltip content="Delete Page">
-                      <Trash2
-                        onClick={() => {
-                          setShow({
-                            state: true,
-                            type: 'delete-page',
-                            data: {
-                              id: page?._id,
-                              name: page?.name,
-                            },
-                          });
-                        }}
-                        className="w-5 h-5 text-red-400 cursor-pointer"
-                      />
-                    </MyTooltip>
+                  <div className="flex flex-col">
+                    <span className="text-xs text-gray-500 uppercase tracking-wider mb-1">
+                      Comments
+                    </span>
+                    <span className="text-gray-200 font-medium text-base">
+                      {page?.comments?.length || 0}
+                    </span>
                   </div>
                 </div>
-              ))}
-          </div>
-        </main>
-      </div>
+
+                <div className="grid grid-cols-2 gap-4 text-xs text-gray-400 mb-4">
+                  <div>
+                    <span className="block text-gray-500 mb-1">Created At</span>
+                    <span className="text-gray-300">
+                      {moment(page?.createdAt).format('DD-MMM-YY hh:mm A')}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="block text-gray-500 mb-1">Updated At</span>
+                    <span className="text-gray-300">
+                      {moment(page?.updatedAt).format('DD-MMM-YY hh:mm A')}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex gap-5 pt-3 border-t border-[#2d2d33] justify-end text-gray-400 text-lg">
+                  <MyTooltip content="Edit Page">
+                    <Edit
+                      onClick={() => {
+                        setShow({
+                          state: true,
+                          type: 'edit-page',
+                          data: {
+                            id: page?._id,
+                            name: page?.name,
+                            page,
+                          },
+                        });
+                      }}
+                      className="w-5 h-5 text-gray-400 cursor-pointer"
+                    />
+                  </MyTooltip>
+
+                  <MyTooltip content="View Page Details">
+                    <SquareTerminal
+                      onClick={() => {
+                        setShow({
+                          state: true,
+                          type: 'preview-json',
+                          data: {
+                            json: page,
+                          },
+                        });
+                      }}
+                      className="w-5 h-5 text-gray-400 ursor-pointer cursor-pointer"
+                    />
+                  </MyTooltip>
+
+                  <MyTooltip content="Open Page">
+                    <SquareArrowOutUpRight
+                      onClick={() => {
+                        window.open(
+                          `${process.env.NEXT_PUBLIC_DOMAIN}/${page?.publicUrl}`,
+                          '_blank',
+                        );
+                      }}
+                      className="w-5 h-5 text-gray-400 cursor-pointer"
+                    />
+                  </MyTooltip>
+
+                  <MyTooltip content="Delete Page">
+                    <Trash2
+                      onClick={() => {
+                        setShow({
+                          state: true,
+                          type: 'delete-page',
+                          data: {
+                            id: page?._id,
+                            name: page?.name,
+                          },
+                        });
+                      }}
+                      className="w-5 h-5 text-red-400 cursor-pointer"
+                    />
+                  </MyTooltip>
+                </div>
+              </div>
+            ))}
+        </div>
+      </main>
+
+      {/* Bottom Sheet */}
 
       <AddPageModal
         onClose={onClose}
