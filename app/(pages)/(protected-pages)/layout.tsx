@@ -87,7 +87,7 @@ function Layout({
           </div>
         </aside>
 
-        <div className="w-screen">
+        <div className="w-screen overflow-y-auto no-scrollbar">
           <header className="flex justify-between items-center p-4 bg-[#202024] border-b border-[#2d2d33] fixed top-0 z-10  md:hidden w-full">
             <div className="text-xl font-serif font-bold tracking-wide">
               Soul<span className="text-[#a855f7]">Talk</span>

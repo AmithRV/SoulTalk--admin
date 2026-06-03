@@ -140,7 +140,7 @@ function PageDetails() {
     <>
       <div className="w-full flex flex-col bg-black text-[#ededed] font-sans">
         {/* Top Navigation */}
-        <header className="flex items-center justify-between px-6 py-4 border-b border-neutral-800 bg-black sticky top-0 z-10">
+        <header className="flex items-center justify-between px-6 py-4 border-b border-neutral-800 bg-black sticky md:top-0 z-10 top-18 ">
           <div className="flex items-center gap-3 text-sm text-neutral-200 font-medium">
             <span className="font-semibold text-[18px] text-white">
               {pageDetails?.data?.name}
@@ -149,7 +149,7 @@ function PageDetails() {
         </header>
 
         {/* Main Content */}
-        <main className="flex-1 p-6 md:p-8 max-w-6xl mx-auto w-full overflow-y-scroll">
+        <main className="flex-1 p-6 md:p-8 max-w-6xl w-full mt-20 md:mx-auto md:mt-0">
           {/* Main Card Container */}
           <div className="border border-neutral-800 rounded-xl bg-[#0a0a0a] overflow-hidden flex flex-col shadow-2xl">
             {/* Card Header */}
