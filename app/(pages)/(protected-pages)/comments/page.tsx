@@ -280,7 +280,7 @@ function Pages() {
         </div>
       </main>
 
-      <main className="flex-1 p-4 px-0 max-w-lg mx-auto w-full overflow-y-auto flex md:hidden flex-col mt-16">
+      <main className="flex-1 p-4 max-w-lg mx-auto w-full overflow-y-auto flex md:hidden flex-col mt-16">
         <div className="flex flex-col gap-4 mb-6">
           <h1 className="text-2xl font-medium text-white">
             Comments ({comments?.data?.length || 0})
