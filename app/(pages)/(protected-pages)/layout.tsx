@@ -1,13 +1,14 @@
 'use client';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
 import { show } from '@/types/show';
 import React, { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { LogoutModal } from '@/components/modals';
 import { logout } from '@/lib/api-collection/auth';
 import { useParams, useRouter } from 'next/navigation';
+import { Menu, PanelRightClose, X } from 'lucide-react';
 import { MobileBottomSheet } from '@/components/layout';
-import { Menu } from 'lucide-react';
 
 function Layout({
   children,
@@ -19,6 +20,7 @@ function Layout({
   const pathname = usePathname();
 
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const [isDesktopNavOpen, setIsDesktopNavOpen] = useState(true);
   const [show, setShow] = useState<show>({ state: false, type: '' });
   const [loading, setLoading] = useState({ type: '', state: false });
 
@@ -26,6 +28,7 @@ function Layout({
     { name: 'Pages', link: '/', activeUrls: ['/', `/pages/${id}`] },
     { name: 'Comments', link: '/comments', activeUrls: ['/comments'] },
   ];
+
   const onClose = () => {
     setShow({ state: false, type: '' });
   };
@@ -44,13 +47,26 @@ function Layout({
   return (
     <>
       <div className="h-screen bg-[#1e1f23] text-white font-sans overflow-auto flex ">
-        {/* Sidebar */}
-        <aside className="w-64 bg-[#17181c] p-4 flex-col justify-between hidden md:flex">
-          <div className="">
-            <button className="w-full bg-[#2a2b30] hover:bg-[#34353b] text-2xl font-serif font-bold text-left p-2 rounded-lg">
+        {/* Sidebar Desktop */}
+        <aside
+          className={cn(
+            'w-64 bg-[#17181c] p-4 flex-col justify-between hidden md:flex',
+            { 'md:hidden': !isDesktopNavOpen },
+          )}
+        >
+          <div className="relative">
+            <button className="w-full bg-[#2a2b30] hover:bg-[#34353b] text-2xl font-serif font-bold text-left p-2 rounded-lg ">
               Soul<span className="text-[#a855f7]">Talk</span>
             </button>
-
+            <a
+              href="#"
+              onClick={() => {
+                setIsDesktopNavOpen(false);
+              }}
+              className="absolute -top-2.5 ml-2 bg-[#36373d] rounded-[50%] cursor-pointer"
+            >
+              <X />
+            </a>
             <div className="mt-6">
               <div className="space-y-2 text-sm flex flex-col">
                 {menu.map((item) => (
@@ -87,6 +103,18 @@ function Layout({
           </div>
         </aside>
 
+        <PanelRightClose
+          onClick={() => {
+            setIsDesktopNavOpen(true);
+          }}
+          // className=
+          className={cn(
+            'text-gray-200 mt-4 ml-1 cursor-pointer hidden md:block ',
+            { 'md:hidden': isDesktopNavOpen },
+          )}
+        />
+
+        {/* Sidebar Mobile */}
         <div className="w-screen overflow-y-auto no-scrollbar">
           <header className="flex justify-between items-center p-4 bg-[#202024] border-b border-[#2d2d33] fixed top-0 z-10  md:hidden w-full">
             <div className="text-xl font-serif font-bold tracking-wide">
