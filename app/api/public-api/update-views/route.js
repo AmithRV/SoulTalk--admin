@@ -8,7 +8,7 @@ import { NextResponse, userAgent } from 'next/server';
 await databaseConnection();
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': 'https://soul-talk-admin.vercel.app', // replace with domain in prod
+  'Access-Control-Allow-Origin': 'https://soultalk.blog', // replace with domain in prod
   'Access-Control-Allow-Methods': 'GET, PATCH, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   'Access-Control-Allow-Credentials': 'true', // Required for cookies
