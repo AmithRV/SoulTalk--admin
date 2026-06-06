@@ -86,12 +86,6 @@ export async function PATCH(request) {
       const views = pageExists?.views;
       const id = pageExists?._id;
 
-      await View.create({
-        country,
-        visitorId,
-        pageId: id,
-      });
-
       const updated = await Page.findByIdAndUpdate(
         id,
         {
@@ -111,8 +105,18 @@ export async function PATCH(request) {
       );
 
       if (!visitorId) {
+        await View.create({
+          country,
+          pageId: id,
+        });
         await createNewVisitor(response, data);
       } else {
+        await View.create({
+          country,
+          visitorId,
+          pageId: id,
+        });
+
         const visitor = await Visitor.findById(visitorId);
 
         if (visitor) {
