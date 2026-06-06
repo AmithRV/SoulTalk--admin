@@ -15,8 +15,6 @@ function Views() {
     setViews({ loading: true, data: [] });
     listViews()
       .then((res) => {
-        console.log('views : ', res.data);
-
         setViews({ data: res.data, loading: false });
       })
       .catch((error: any) => {
@@ -74,7 +72,7 @@ function Views() {
                     <th className="px-6 py-3">Visitor Id</th>
                     <th className="px-6 py-3 cursor-pointer">Page</th>
                     <th className="px-6 py-3">Country</th>
-                    <th className="px-6 py-3 cursor-pointer">visited At</th>
+                    <th className="px-6 py-3 cursor-pointer">Visited At</th>
                   </tr>
                 </thead>
 
@@ -130,6 +128,101 @@ function Views() {
               </table>
             </div>
           </div>
+        </div>
+      </main>
+
+      <main className="flex-1 p-4 max-w-lg mx-auto w-full overflow-y-auto flex md:hidden flex-col mt-16">
+        <div className="flex flex-col gap-4 mb-6">
+          <h1 className="text-2xl font-medium text-white">
+            Views ({views?.data?.length || 0})
+          </h1>
+
+          <div className="flex gap-3">
+            <button
+              onClick={handleRefresh}
+              className="bg-[#2563eb] hover:bg-blue-600 text-white px-4 py-2.5 rounded-md font-medium text-sm flex items-center justify-center gap-2 flex-1 shadow-sm transition-colors cursor-pointer"
+            >
+              <RefreshCcw
+                className={cn('w-4 h-4 mr-1', {
+                  'animate-spin': views?.loading,
+                })}
+              />
+              Refresh
+            </button>
+          </div>
+        </div>
+
+        <div className="text-[#a855f7] font-medium mb-4 text-sm tracking-wide">
+          Total Views : {views?.data?.length}
+        </div>
+
+        <div className="flex flex-col gap-4">
+          {!views?.loading &&
+            views?.data?.length > 0 &&
+            views?.data.map((view: any, index) => (
+              <div
+                key={index}
+                className="bg-[#202024] rounded-lg p-4 border border-[#2d2d33] shadow-sm"
+              >
+                <div className="flex justify-between items-start mb-3">
+                  <h2 className="text-base text-gray-100 dashed-underline leading-tight pr-4">
+                    View Id : {view?._id}
+                  </h2>
+                  <span className="text-xs font-mono text-gray-400 bg-[#2d2d33] px-2 py-1 rounded">
+                    #{index + 1}
+                  </span>
+                </div>
+
+                <div className="flex justify-between items-start mb-3">
+                  <h2 className="text-base text-gray-100 dashed-underline leading-tight pr-4">
+                    Visitor Id : {view?.visitorId}
+                  </h2>
+                  <span className="text-xs font-mono text-gray-400 bg-[#2d2d33] px-2 py-1 rounded">
+                    #{index + 1}
+                  </span>
+                </div>
+
+                <div className="flex text-sm text-gray-400 mb-4 bg-[#18181b] p-3 rounded-md">
+                  <div className="flex flex-col">
+                    <span className="text-xs text-gray-500 uppercase tracking-wider mb-1">
+                      Page
+                    </span>
+                    <span className="text-gray-200 font-medium text-base">
+                      <Link
+                        href={`/pages/${view?.page?._id}`}
+                        className="border-b border-dotted "
+                      >
+                        {view?.page?.name}
+                      </Link>
+                    </span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 text-xs text-gray-400 mb-4">
+                  <div>
+                    <span className="block text-gray-500 mb-1">Visited At</span>
+                    <span className="text-gray-300">
+                      {moment(view?.createdAt).format('DD-MMM-YY hh:mm A')}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="block text-gray-500 mb-1">Country</span>
+                    <span className="text-gray-300">{view?.country}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+
+          {views?.loading && (
+            <div className="hover:bg-[#2a2b30]">
+              <div className="w-full px-6 py-4 uppercase text-center font-bold">
+                <div className="flex justify-center items-center">
+                  <Loader2 className="animate-spin mr-2 w-4 h-4" />
+                  loading views
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </main>
 

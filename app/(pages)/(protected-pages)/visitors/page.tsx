@@ -14,8 +14,6 @@ function Visitors() {
     setVisitors({ loading: true, data: [] });
     listVisitor()
       .then((res) => {
-        console.log('=> ', res.data);
-
         setVisitors({ data: res.data, loading: false });
       })
       .catch((error: any) => {
