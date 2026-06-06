@@ -184,7 +184,17 @@ function Views() {
 
                 <div className="flex justify-between items-start mb-3">
                   <h2 className="text-base text-gray-100 dashed-underline leading-tight pr-4">
-                    Visitor Id : {view?.visitorId}
+                    Visitor Id :
+                    {view?.visitorId ? (
+                      <Link
+                        href={`/visitors/${view?.visitorId}`}
+                        className="border-b border-dotted"
+                      >
+                        {view?.visitorId}
+                      </Link>
+                    ) : (
+                      'N/A'
+                    )}
                   </h2>
                   <span className="text-xs font-mono text-gray-400 bg-[#2d2d33] px-2 py-1 rounded">
                     #{index + 1}
