@@ -4,16 +4,16 @@ const viewtSchema = new Schema(
   {
     visitorId: {
       type: String,
-      required: true,
+      required: false,
     },
     country: {
       type: String,
-      required: true,
+      required: false,
     },
     pageId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Page',
-      required: true,
+      required: false,
     },
   },
   { timestamps: true },

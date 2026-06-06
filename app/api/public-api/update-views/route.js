@@ -38,9 +38,14 @@ export async function PATCH(request) {
         { status: 404 },
       );
       if (!visitorId) {
-        const newVisitorId = crypto.randomUUID();
+        const newVisitor = await Visitor.create({
+          visitorId,
+          country,
+          totalVisits: 0,
+          device: '',
+        });
 
-        response.cookies.set('visitorId', newVisitorId, {
+        response.cookies.set('visitorId', newVisitor?._id, {
           httpOnly: true,
           path: '/',
           maxAge: 60 * 60 * 24 * 365 * 100,
@@ -82,9 +87,14 @@ export async function PATCH(request) {
       );
 
       if (!visitorId) {
-        const newVisitorId = crypto.randomUUID();
+        const newVisitor = await Visitor.create({
+          country,
+          totalVisits: 0,
+          device: '',
+        });
+        console.log('newVisitor : ', newVisitor);
 
-        response.cookies.set('visitorId', newVisitorId, {
+        response.cookies.set('visitorId', newVisitor._id, {
           httpOnly: true,
           path: '/',
           maxAge: 60 * 60 * 24 * 365 * 100,
@@ -93,12 +103,11 @@ export async function PATCH(request) {
         });
       } else {
         console.log('visitorId :  ', visitorId);
-        await Visitor.create({
-          visitorId,
-          country,
-          totalVisits: 0,
-          device: '',
-        });
+        // await Visitor.create({
+        //   country,
+        //   totalVisits: 0,
+        //   device: '',
+        // });
       }
 
       return response;

@@ -15,9 +15,9 @@ function Visitors() {
     setVisitors({ loading: true, data: [] });
     listVisitor()
       .then((res) => {
-        setVisitors({ data: res.data, loading: false });
+        console.log('=> ', res.data);
 
-        // setVisitors({ data: res.data, loading: false });
+        setVisitors({ data: res.data, loading: false });
       })
       .catch((error: any) => {
         //
@@ -28,7 +28,9 @@ function Visitors() {
         setVisitors({ data: [], loading: false });
       });
   };
-  const handleRefresh = () => {};
+  const handleRefresh = () => {
+    handleListVisitors();
+  };
 
   useEffect(() => {
     handleListVisitors();
@@ -81,15 +83,24 @@ function Visitors() {
                 <tbody className="divide-y divide-gray-700">
                   {!visitors?.loading &&
                     visitors?.data?.length > 0 &&
-                    visitors?.data.map((view: any, index) => (
-                      <tr key={view?._id} className="hover:bg-[#2a2b30]">
+                    visitors?.data.map((visitor: any, index) => (
+                      <tr key={visitor?._id} className="hover:bg-[#2a2b30]">
                         <td className="px-6 py-4 w-12.5">{index + 1}</td>
-                        <td className="px-6 py-4">Visitor Id</td>
-                        <td className="px-6 py-4">country</td>
-                        <td className="px-6 py-4">First visit </td>
-                        <td className="px-6 py-4">Last visit </td>
-                        <td className="px-6 py-4">Total visits </td>
-                        <td className="px-6 py-4">Device </td>
+                        <td className="px-6 py-4">{visitor?._id}</td>
+                        <td className="px-6 py-4">{visitor?.country}</td>
+                        <td className="px-6 py-4">
+                          {moment(visitor?.createdAt).format(
+                            'DD-MMM-YY hh:mm A',
+                          )}
+                        </td>
+                        <td className="px-6 py-4">
+                          {' '}
+                          {moment(visitor?.updatedAt).format(
+                            'DD-MMM-YY hh:mm A',
+                          )}{' '}
+                        </td>
+                        <td className="px-6 py-4">{visitor?.totalVisits} </td>
+                        <td className="px-6 py-4">{visitor?.device} </td>
                       </tr>
                     ))}
 

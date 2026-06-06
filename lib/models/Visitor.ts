@@ -2,10 +2,6 @@ import mongoose, { Schema } from 'mongoose';
 
 const visitorSchema = new Schema(
   {
-    visitorId: {
-      type: String,
-      required: false,
-    },
     country: {
       type: String,
       required: false,
