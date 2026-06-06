@@ -13,7 +13,7 @@ export default function DeleteConfirmationModal({
 }) {
   if (open)
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="flex items-center justify-center h-screen bg-gray-100 absolute">
         <div
           className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
           onClick={onClose}

@@ -27,6 +27,8 @@ function Layout({
   const menu = [
     { name: 'Pages', link: '/', activeUrls: ['/', `/pages/${id}`] },
     { name: 'Comments', link: '/comments', activeUrls: ['/comments'] },
+    { name: 'Views', link: '/views', activeUrls: ['/views'] },
+    { name: 'Visitors', link: '/visitors', activeUrls: ['/visitors'] },
   ];
 
   const onClose = () => {
