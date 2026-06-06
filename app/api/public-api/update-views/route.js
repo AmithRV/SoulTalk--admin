@@ -1,4 +1,5 @@
 import Page from '@/lib/models/Page';
+import View from '@/lib/models/View';
 import { NextResponse } from 'next/server';
 import { formatZodErrors } from '@/lib/utils';
 import { databaseConnection } from '@/lib/dbConfig';
@@ -17,6 +18,10 @@ export async function OPTIONS() {
 
 export async function PATCH(request) {
   try {
+    //
+    const country = request.headers.get('x-vercel-ip-country') || 'Unknown';
+
+    console.log('country : ', country);
     const reqBody = await request.json();
 
     const { id } = reqBody;
@@ -32,6 +37,12 @@ export async function PATCH(request) {
       //
       const views = pageExists?.views;
       const id = pageExists?._id;
+
+      await View.create({
+        visitorId: '1',
+        country: '2',
+        pageId: id,
+      });
 
       const updated = await Page.findByIdAndUpdate(
         id,
@@ -59,6 +70,8 @@ export async function PATCH(request) {
         { status: 422, headers: corsHeaders },
       );
     } else {
+      console.log('error : ', error);
+
       return NextResponse.json(
         { message: error.message },
         { status: 500, headers: corsHeaders },

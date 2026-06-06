@@ -83,23 +83,21 @@ function Views() {
                 <tbody className="divide-y divide-gray-700">
                   {!views?.loading &&
                     views?.data?.length > 0 &&
-                    views?.data.map((page: any, index) => (
-                      <tr key={page?._id} className="hover:bg-[#2a2b30]">
+                    views?.data.map((view: any, index) => (
+                      <tr key={view?._id} className="hover:bg-[#2a2b30]">
                         <td className="px-6 py-4 w-12.5">{index + 1}</td>
+                        <td className="px-6 py-4">Visitor Id</td>
                         <td className="px-6 py-4 ">
                           <Link
                             className="border-b border-dotted"
-                            href={`/pages/${page?._id}`}
+                            href={`/pages/${view?.page?._id}`}
                           >
-                            {page?.name}
+                            {view?.page?.name}
                           </Link>
                         </td>
-                        <td className="px-6 py-4">{page?.views}</td>
+                        <td className="px-6 py-4">india</td>
                         <td className="px-6 py-4">
-                          {page?.comments?.length || 0}
-                        </td>
-                        <td className="px-6 py-4">
-                          {moment(page?.createdAt).format('DD-MMM-YY hh:mm A')}
+                          {moment(view?.createdAt).format('DD-MMM-YY hh:mm A')}
                         </td>
                       </tr>
                     ))}
