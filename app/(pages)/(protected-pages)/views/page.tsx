@@ -38,7 +38,7 @@ function Views() {
     <>
       <main className="flex-1 flex-col  hidden md:flex">
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-700">
-          <h1 className="text-lg font-medium">{`Views (${views?.data?.length || 0})`}</h1>
+          <h1 className="text-lg font-medium">Views</h1>
           <div className="flex">
             <button
               onClick={() => {
@@ -57,7 +57,7 @@ function Views() {
           </div>
         </div>
         <p className="pl-4 pt-4 text-purple-600 font-semibold">
-          Total Views : 0
+          Total Views : {views?.data?.length}
         </p>
         {/* Center Content */}
         <div className="bg-[#1e1f23] text-white min-h-auto p-4">
