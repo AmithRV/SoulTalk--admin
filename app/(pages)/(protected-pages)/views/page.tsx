@@ -95,7 +95,7 @@ function Views() {
                             {view?.page?.name}
                           </Link>
                         </td>
-                        <td className="px-6 py-4">india</td>
+                        <td className="px-6 py-4">{view?.country}</td>
                         <td className="px-6 py-4">
                           {moment(view?.createdAt).format('DD-MMM-YY hh:mm A')}
                         </td>
