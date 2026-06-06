@@ -3,7 +3,7 @@ import mongoose, { Schema } from 'mongoose';
 const viewtSchema = new Schema(
   {
     visitorId: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
       required: false,
     },
     country: {

@@ -16,7 +16,7 @@ function Layout({
   children: React.ReactNode;
 }>) {
   const router = useRouter();
-  const { id } = useParams();
+  const { id, visitorId } = useParams();
   const pathname = usePathname();
 
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
@@ -28,7 +28,11 @@ function Layout({
     { name: 'Pages', link: '/', activeUrls: ['/', `/pages/${id}`] },
     { name: 'Comments', link: '/comments', activeUrls: ['/comments'] },
     { name: 'Views', link: '/views', activeUrls: ['/views'] },
-    { name: 'Visitors', link: '/visitors', activeUrls: ['/visitors'] },
+    {
+      name: 'Visitors',
+      link: '/visitors',
+      activeUrls: ['/visitors', `/visitors/${visitorId}`],
+    },
   ];
 
   const onClose = () => {

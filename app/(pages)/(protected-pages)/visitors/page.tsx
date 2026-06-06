@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Loader2, RefreshCcw } from 'lucide-react';
 import { listVisitor } from '@/lib/api-collection/visitors';
+import Link from 'next/link';
 
 function Visitors() {
   //
@@ -84,7 +85,11 @@ function Visitors() {
                     visitors?.data.map((visitor: any, index) => (
                       <tr key={visitor?._id} className="hover:bg-[#2a2b30]">
                         <td className="px-6 py-4 w-12.5">{index + 1}</td>
-                        <td className="px-6 py-4">{visitor?._id}</td>
+                        <td className="px-6 py-4">
+                          <Link href={`/visitors/${visitor?._id}`}>
+                            {visitor?._id}
+                          </Link>
+                        </td>
                         <td className="px-6 py-4">{visitor?.country}</td>
                         <td className="px-6 py-4">
                           {moment(visitor?.createdAt).format(
