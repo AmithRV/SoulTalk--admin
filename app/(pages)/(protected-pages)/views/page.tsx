@@ -2,7 +2,6 @@
 import moment from 'moment';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { show } from '@/types/show';
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Loader2, RefreshCcw } from 'lucide-react';
@@ -11,12 +10,6 @@ import { listViews } from '@/lib/api-collection/views';
 function Views() {
   //
   const [views, setViews] = useState({ loading: true, data: [] });
-  const [loading, setLoading] = useState({ type: '', state: false });
-  const [show, setShow] = useState<show>({ state: false, type: '' });
-
-  const onClose = () => {
-    setShow({ state: false, type: '' });
-  };
 
   const handleListViews = () => {
     setViews({ loading: true, data: [] });
@@ -40,6 +33,7 @@ function Views() {
   useEffect(() => {
     handleListViews();
   }, []);
+
   return (
     <>
       <main className="flex-1 flex-col  hidden md:flex">
@@ -54,9 +48,11 @@ function Views() {
               className="ml-2 bg-blue-500 hover:bg-blue-600 px-2 py-1 rounded-[5px] text-sm font-bold cursor-pointer flex items-center disabled:bg-blue-400"
             >
               <RefreshCcw
-                className={cn('w-4 h-4 mr-1', { 'animate-spin': loading })}
+                className={cn('w-4 h-4 mr-1', {
+                  'animate-spin': views?.loading,
+                })}
               />
-              <span>{loading ? 'Refreshing...' : 'Refresh'}</span>
+              <span>{views?.loading ? 'Refreshing...' : 'Refresh'}</span>
             </button>
           </div>
         </div>
@@ -86,7 +82,9 @@ function Views() {
                     views?.data.map((view: any, index) => (
                       <tr key={view?._id} className="hover:bg-[#2a2b30]">
                         <td className="px-6 py-4 w-12.5">{index + 1}</td>
-                        <td className="px-6 py-4">Visitor Id</td>
+                        <td className="px-6 py-4">
+                          {view?.visitorId || 'N/A'}
+                        </td>
                         <td className="px-6 py-4 ">
                           <Link
                             className="border-b border-dotted"
@@ -95,7 +93,7 @@ function Views() {
                             {view?.page?.name}
                           </Link>
                         </td>
-                        <td className="px-6 py-4">{view?.country}</td>
+                        <td className="px-6 py-4">{view?.country || 'N/A'}</td>
                         <td className="px-6 py-4">
                           {moment(view?.createdAt).format('DD-MMM-YY hh:mm A')}
                         </td>
