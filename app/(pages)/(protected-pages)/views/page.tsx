@@ -28,7 +28,9 @@ function Views() {
         setViews({ data: [], loading: false });
       });
   };
-  const handleRefresh = () => {};
+  const handleRefresh = () => {
+    handleListViews();
+  };
 
   useEffect(() => {
     handleListViews();
