@@ -86,7 +86,10 @@ function Visitors() {
                       <tr key={visitor?._id} className="hover:bg-[#2a2b30]">
                         <td className="px-6 py-4 w-12.5">{index + 1}</td>
                         <td className="px-6 py-4">
-                          <Link href={`/visitors/${visitor?._id}`}>
+                          <Link
+                            href={`/visitors/${visitor?._id}`}
+                            className="border-b border-dotted"
+                          >
                             {visitor?._id}
                           </Link>
                         </td>
@@ -175,7 +178,12 @@ function Visitors() {
               >
                 <div className="flex justify-between items-start mb-3">
                   <h2 className="text-base text-gray-100 dashed-underline leading-tight pr-4">
-                    {visitor?._id}
+                    <Link
+                      href={`/visitors/${visitor?._id}`}
+                      className="border-b border-dotted"
+                    >
+                      {visitor?._id}
+                    </Link>
                   </h2>
                   <span className="text-xs font-mono text-gray-400 bg-[#2d2d33] px-2 py-1 rounded">
                     #{index + 1}
