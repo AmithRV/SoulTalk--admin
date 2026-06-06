@@ -1,15 +1,17 @@
 import Page from '@/lib/models/Page';
 import View from '@/lib/models/View';
+import Visitor from '@/lib/models/Visitor';
 import { NextResponse } from 'next/server';
 import { formatZodErrors } from '@/lib/utils';
 import { databaseConnection } from '@/lib/dbConfig';
-
+//
 await databaseConnection();
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*', // replace with domain in prod
+  'Access-Control-Allow-Origin': 'http://localhost:5500', // replace with domain in prod
   'Access-Control-Allow-Methods': 'GET, PATCH, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  'Access-Control-Allow-Credentials': 'true', // Required for cookies
 };
 
 export async function OPTIONS() {
@@ -21,26 +23,43 @@ export async function PATCH(request) {
     //
     const country = request.headers.get('x-vercel-ip-country') || 'Unknown';
 
-    console.log('country : ', country);
     const reqBody = await request.json();
 
     const { id } = reqBody;
 
+    const visitorId = request.cookies.get('visitorId')?.value || '';
+
     const pageExists = await Page.findById(id);
 
+    // page not found
     if (!pageExists) {
-      return NextResponse.json(
+      const response = NextResponse.json(
         { message: 'page not found', headers: corsHeaders },
         { status: 404 },
       );
+      if (!visitorId) {
+        const newVisitorId = crypto.randomUUID();
+
+        response.cookies.set('visitorId', newVisitorId, {
+          httpOnly: true,
+          path: '/',
+          maxAge: 60 * 60 * 24 * 365 * 100,
+          sameSite: 'lax',
+          secure: false,
+        });
+      } else {
+        console.log('visitorId :  ', visitorId);
+      }
+
+      return response;
     } else {
       //
       const views = pageExists?.views;
       const id = pageExists?._id;
 
       await View.create({
-        visitorId: '1',
         country,
+        visitorId,
         pageId: id,
       });
 
@@ -57,10 +76,32 @@ export async function PATCH(request) {
         },
       );
 
-      return NextResponse.json(
+      const response = NextResponse.json(
         { page: updated, message: 'View Updated.' },
         { status: 200, headers: corsHeaders },
       );
+
+      if (!visitorId) {
+        const newVisitorId = crypto.randomUUID();
+
+        response.cookies.set('visitorId', newVisitorId, {
+          httpOnly: true,
+          path: '/',
+          maxAge: 60 * 60 * 24 * 365 * 100,
+          sameSite: 'lax',
+          secure: false,
+        });
+      } else {
+        console.log('visitorId :  ', visitorId);
+        await Visitor.create({
+          visitorId,
+          country,
+          totalVisits: 0,
+          device: '',
+        });
+      }
+
+      return response;
     }
   } catch (error) {
     if (error.name === 'ZodError') {

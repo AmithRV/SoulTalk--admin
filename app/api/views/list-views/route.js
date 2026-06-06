@@ -10,7 +10,6 @@ await databaseConnection();
 export async function GET(request) {
   try {
     //
-
     const views = await View.aggregate([
       { $sort: { createdAt: -1 } },
       {
