@@ -63,7 +63,7 @@ function Views() {
         <div className="bg-[#1e1f23] text-white min-h-auto p-4">
           <div className="bg-[#17181c] rounded-lg shadow-lg overflow-hidden">
             {/* Scroll Container */}
-            <div className="max-h-[calc(100vh-100px)] overflow-y-auto">
+            <div className="max-h-[calc(100vh-140px)] overflow-y-auto no-scrollbar">
               <table className="w-full text-sm text-left border-collapse">
                 {/* Sticky Header */}
                 <thead className="bg-[#2a2b30] sticky top-0 z-10">
