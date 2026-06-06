@@ -83,7 +83,16 @@ function Views() {
                       <tr key={view?._id} className="hover:bg-[#2a2b30]">
                         <td className="px-6 py-4 w-12.5">{index + 1}</td>
                         <td className="px-6 py-4">
-                          {view?.visitorId || 'N/A'}
+                          {view?.visitorId ? (
+                            <Link
+                              href={`/visitors/${view?.visitorId}`}
+                              className="border-b border-dotted"
+                            >
+                              {view?.visitorId}
+                            </Link>
+                          ) : (
+                            'N/A'
+                          )}
                         </td>
                         <td className="px-6 py-4 ">
                           <Link
