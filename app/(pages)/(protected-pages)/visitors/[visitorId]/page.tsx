@@ -246,7 +246,8 @@ function Views() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-4">
+        {/* Mobile Views */}
+        <div className="flex flex-col gap-4 md:hidden ">
           {!visitorDetails?.loading &&
             visitorDetails?.data?.views?.length > 0 &&
             visitorDetails?.data?.views.map((view: any, index: number) => (
