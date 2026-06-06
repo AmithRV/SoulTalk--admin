@@ -25,8 +25,8 @@ async function createNewVisitor(response, data) {
     httpOnly: true,
     path: '/',
     maxAge: 60 * 60 * 24 * 365 * 100,
-    sameSite: 'lax',
-    secure: false,
+    sameSite: 'none',
+    secure: true,
   });
 }
 
