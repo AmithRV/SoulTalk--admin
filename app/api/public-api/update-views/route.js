@@ -40,7 +40,7 @@ export async function PATCH(request) {
 
       await View.create({
         visitorId: '1',
-        country: '2',
+        country,
         pageId: id,
       });
 
