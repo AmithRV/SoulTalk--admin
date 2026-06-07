@@ -11,7 +11,40 @@ await databaseConnection();
 export async function GET(request) {
   try {
     //
-    const Visitors = await Visitor.aggregate([{ $sort: { createdAt: -1 } }]);
+    const Visitors = await Visitor.aggregate([
+      {
+        $lookup: {
+          from: 'views',
+          let: { visitorId: '$_id' },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: ['$visitorId', '$$visitorId'],
+                },
+              },
+            },
+            {
+              $count: 'totalViews',
+            },
+          ],
+          as: 'viewStats',
+        },
+      },
+      {
+        $addFields: {
+          totalViews: {
+            $ifNull: [{ $arrayElemAt: ['$viewStats.totalViews', 0] }, 0],
+          },
+        },
+      },
+      {
+        $project: {
+          viewStats: 0,
+        },
+      },
+      { $sort: { createdAt: -1 } },
+    ]);
     return NextResponse.json({ data: Visitors }, { status: 200 });
   } catch (error) {
     if (error.name === 'ZodError') {

@@ -8,7 +8,8 @@ import { NextResponse, userAgent } from 'next/server';
 await databaseConnection();
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': 'https://soultalk.blog', // replace with domain in prod
+  'Access-Control-Allow-Origin': 'http://127.0.0.1:5500',
+  // 'Access-Control-Allow-Origin': 'https://soultalk.blog', // replace with domain in prod
   'Access-Control-Allow-Methods': 'GET, PATCH, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   'Access-Control-Allow-Credentials': 'true', // Required for cookies
@@ -28,21 +29,8 @@ async function createNewVisitor(response, data) {
     sameSite: 'none',
     secure: true,
   });
-}
 
-async function updateVisitor(visitor, totalVisits) {
-  await Visitor.findByIdAndUpdate(
-    visitor?._id,
-    {
-      $set: {
-        totalVisits: totalVisits + 1,
-      },
-    },
-    {
-      new: true,
-      runValidators: true,
-    },
-  );
+  return newVisitor;
 }
 
 export async function PATCH(request) {
@@ -65,7 +53,7 @@ export async function PATCH(request) {
     const data = {
       visitorId,
       country,
-      totalVisits: 1,
+      // totalVisits: 1,
       device: deviceType,
     };
 
@@ -105,25 +93,19 @@ export async function PATCH(request) {
       );
 
       if (!visitorId) {
+        const newVisitor = await createNewVisitor(response, data);
+
         await View.create({
           country,
           pageId: id,
+          visitorId: newVisitor?._id,
         });
-        await createNewVisitor(response, data);
       } else {
         await View.create({
           country,
           visitorId,
           pageId: id,
         });
-
-        const visitor = await Visitor.findById(visitorId);
-
-        if (visitor) {
-          await updateVisitor(visitor, visitor?.totalVisits);
-        } else {
-          await createNewVisitor(response, data);
-        }
       }
 
       return response;

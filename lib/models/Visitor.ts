@@ -6,10 +6,6 @@ const visitorSchema = new Schema(
       type: String,
       required: false,
     },
-    totalVisits: {
-      type: Number,
-      required: false,
-    },
     device: {
       type: String,
       required: false,

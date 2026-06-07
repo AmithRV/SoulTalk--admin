@@ -74,7 +74,7 @@ function Visitors() {
                     <th className="px-6 py-3 cursor-pointer">Country</th>
                     <th className="px-6 py-3">First visit</th>
                     <th className="px-6 py-3">Last visit</th>
-                    <th className="px-6 py-3">Total visits</th>
+                    <th className="px-6 py-3">Total views</th>
                     <th className="px-6 py-3">Device</th>
                   </tr>
                 </thead>
@@ -105,7 +105,7 @@ function Visitors() {
                             'DD-MMM-YY hh:mm A',
                           )}{' '}
                         </td>
-                        <td className="px-6 py-4">{visitor?.totalVisits} </td>
+                        <td className="px-6 py-4">{visitor?.totalViews} </td>
                         <td className="px-6 py-4 capitalize">
                           {visitor?.device}{' '}
                         </td>
@@ -193,10 +193,10 @@ function Visitors() {
                 <div className="flex gap-6 text-sm text-gray-400 mb-4 bg-[#18181b] p-3 rounded-md">
                   <div className="flex flex-col">
                     <span className="text-xs text-gray-500 uppercase tracking-wider mb-1">
-                      Total visits
+                      Total views
                     </span>
                     <span className="text-gray-200 font-medium text-base">
-                      {visitor?.totalVisits}
+                      {visitor?.totalViews}
                     </span>
                   </div>
                   <div className="flex flex-col">
