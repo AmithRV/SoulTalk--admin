@@ -15,32 +15,23 @@ export async function GET(request) {
       {
         $lookup: {
           from: 'views',
-          let: { visitorId: '$_id' },
-          pipeline: [
-            {
-              $match: {
-                $expr: {
-                  $eq: ['$visitorId', '$$visitorId'],
-                },
-              },
-            },
-            {
-              $count: 'totalViews',
-            },
-          ],
-          as: 'viewStats',
+          localField: '_id',
+          foreignField: 'visitorId',
+          as: 'visitorViews',
         },
       },
       {
         $addFields: {
           totalViews: {
-            $ifNull: [{ $arrayElemAt: ['$viewStats.totalViews', 0] }, 0],
+            $size: {
+              $ifNull: ['$visitorViews', []],
+            },
           },
         },
       },
       {
         $project: {
-          viewStats: 0,
+          visitorViews: 0,
         },
       },
       { $sort: { createdAt: -1 } },

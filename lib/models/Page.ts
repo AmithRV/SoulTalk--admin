@@ -14,10 +14,6 @@ const pageSchema = new Schema(
       type: String,
       required: true,
     },
-    views: {
-      type: Number,
-      required: false,
-    },
     description: {
       type: String,
       unique: false,

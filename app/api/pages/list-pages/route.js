@@ -13,7 +13,6 @@ export async function GET(request) {
 
     // Use aggregation to join the comments
     const pages = await Page.aggregate([
-      { $sort: { createdAt: -1 } },
       {
         $lookup: {
           from: 'comments',
@@ -22,6 +21,34 @@ export async function GET(request) {
           as: 'comments',
         },
       },
+      {
+        $lookup: {
+          from: 'views',
+          localField: '_id',
+          foreignField: 'pageId',
+          as: 'visitorViews',
+        },
+      },
+      {
+        $addFields: {
+          comments: {
+            $size: {
+              $ifNull: ['$comments', []],
+            },
+          },
+          views: {
+            $size: {
+              $ifNull: ['$visitorViews', []],
+            },
+          },
+        },
+      },
+      {
+        $project: {
+          visitorViews: 0,
+        },
+      },
+      { $sort: { createdAt: -1 } },
     ]);
     return NextResponse.json({ data: pages }, { status: 200 });
   } catch (error) {

@@ -216,9 +216,7 @@ function Pages() {
                           </Link>
                         </td>
                         <td className="px-6 py-4">{page?.views}</td>
-                        <td className="px-6 py-4">
-                          {page?.comments?.length || 0}
-                        </td>
+                        <td className="px-6 py-4">{page?.comments || 0}</td>
 
                         <td className="px-6 py-4">
                           {moment(page?.createdAt).format('DD-MMM-YY hh:mm A')}
@@ -391,7 +389,7 @@ function Pages() {
                       Comments
                     </span>
                     <span className="text-gray-200 font-medium text-base">
-                      {page?.comments?.length || 0}
+                      {page?.comments || 0}
                     </span>
                   </div>
                 </div>
