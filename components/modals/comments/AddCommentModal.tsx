@@ -26,7 +26,6 @@ function AddCommentModal({
   loading = false,
 }: props) {
   //
-
   const {
     reset,
     register,

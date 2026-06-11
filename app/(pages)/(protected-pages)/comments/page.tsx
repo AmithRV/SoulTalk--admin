@@ -156,13 +156,16 @@ function Pages() {
     <>
       <main className="flex-1 md:flex flex-col hidden">
         <TopBar
-          label={`Comments (${comments?.data?.length || 0})`}
+          label={`Comments`}
           setShow={setShow}
           btnlabel="Add Comment"
           actionType="add-comment"
           handleRefresh={handleRefresh}
           loading={comments?.loading}
         />
+        <p className="pl-4 pt-4 text-purple-600 font-semibold">
+          Total Comments : {comments?.data?.length}
+        </p>
 
         {/* Center Content */}
         <div className="bg-[#1e1f23] text-white min-h-auto p-4">
@@ -178,6 +181,7 @@ function Pages() {
                     <th className="px-6 py-3">Name</th>
                     <th className="px-6 py-3 cursor-pointer">Comment</th>
                     <th className="px-6 py-3 cursor-pointer">Created At</th>
+                    <th className="px-6 py-3 cursor-pointer">Updated At</th>
                     <th className="px-6 py-3">Actions</th>
                   </tr>
                 </thead>
@@ -188,22 +192,28 @@ function Pages() {
                     comments?.data.map((comment: any, index) => (
                       <tr key={comment?._id} className="hover:bg-[#2a2b30]">
                         <td className="px-6 py-4 w-12.5">{index + 1}</td>
-                        <td className="px-6 py-4 w-12.5">
-                          {comment?.page?.name}
-                        </td>
-                        <td className="px-6 py-4 ">
+                        <td className="px-6 py-4">
                           <Link
                             className="border-b border-dotted"
-                            href={`/pages/${comment?._id}`}
+                            href={`/pages/${comment?.page?._id}`}
                           >
-                            {comment?.name}
+                            {comment?.page?.name}
                           </Link>
                         </td>
+                        <td className="px-6 py-4 ">{comment?.name}</td>
                         <td className="px-6 py-4">{comment?.comment}</td>
 
                         <td className="px-6 py-4">
                           <p className="min-w-max">
                             {moment(comment?.createdAt).format(
+                              'DD-MMM-YY hh:mm A',
+                            )}
+                          </p>
+                        </td>
+
+                        <td className="px-6 py-4">
+                          <p className="min-w-max">
+                            {moment(comment?.updatedAt).format(
                               'DD-MMM-YY hh:mm A',
                             )}
                           </p>
@@ -318,6 +328,10 @@ function Pages() {
             </button>
           </div>
         </div>
+
+        <p className="pl-4 pb-4 text-purple-600 font-semibold">
+          Total Comments : {comments?.data?.length}
+        </p>
 
         <div className="flex flex-col gap-4">
           {!comments?.loading &&

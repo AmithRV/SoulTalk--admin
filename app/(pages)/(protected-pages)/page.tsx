@@ -25,6 +25,7 @@ import { show } from '@/types/index';
 import { useEffect, useState } from 'react';
 import { TopBar } from '@/components/layout';
 import toast, { Toaster } from 'react-hot-toast';
+import { listCategories } from '@/lib/api-collection/categories';
 import { AddPageModal, EditPageModal } from '@/components/modals/Page';
 
 function Pages() {
@@ -32,6 +33,7 @@ function Pages() {
   const [pages, setPages] = useState({ loading: true, data: [] });
   const [loading, setLoading] = useState({ type: '', state: false });
   const [show, setShow] = useState<show>({ state: false, type: '' });
+  const [categories, setCategories] = useState({ loading: true, data: [] });
 
   const onClose = () => {
     setShow({ state: false, type: '' });
@@ -86,6 +88,24 @@ function Pages() {
       });
   };
 
+  const handleListCategories = () => {
+    setCategories((prev) => ({
+      ...prev,
+      loading: true,
+    }));
+    listCategories()
+      .then((res) => {
+        setCategories({ data: res.data, loading: false });
+      })
+      .catch((error: any) => {
+        //
+        const defaultMsg = 'Something went wrong';
+        const message = error?.response?.data?.message;
+
+        toast.error(message || defaultMsg);
+        setCategories({ data: [], loading: false });
+      });
+  };
   const handleAddPage = (formData: any) => {
     setLoading({ type: 'add-page', state: true });
     addPages(formData)
@@ -159,6 +179,7 @@ function Pages() {
 
   useEffect(() => {
     handleRefresh();
+    handleListCategories();
   }, []);
 
   return (
@@ -194,6 +215,7 @@ function Pages() {
                       Views
                     </th>
                     <th className="px-6 py-3">Comments</th>
+                    <th className="px-6 py-3">Category</th>
                     <th
                       className="px-6 py-3 cursor-pointer"
                       onClick={() => handleSort('createdAt')}
@@ -226,6 +248,14 @@ function Pages() {
                         </td>
                         <td className="px-6 py-4">{page?.views}</td>
                         <td className="px-6 py-4">{page?.comments || 0}</td>
+                        <td className="px-6 py-4">
+                          <Link
+                            className="border-b border-dotted"
+                            href={`/categories/${page?.category?._id}`}
+                          >
+                            {page?.category?.name || '---'}
+                          </Link>
+                        </td>
 
                         <td className="px-6 py-4">
                           {moment(page?.createdAt).format('DD-MMM-YY hh:mm A')}
@@ -370,7 +400,7 @@ function Pages() {
                 key={index}
                 className="bg-[#202024] rounded-lg p-4 border border-[#2d2d33] shadow-sm"
               >
-                <div className="flex justify-between items-start mb-3">
+                <div className="flex justify-between items-start">
                   <h2 className="text-base text-gray-100 dashed-underline leading-tight pr-4">
                     <Link
                       className="border-b border-dotted"
@@ -383,7 +413,12 @@ function Pages() {
                     #{index + 1}
                   </span>
                 </div>
-
+                <p className="text-sm my-2">
+                  Category :
+                  <span className="text-gray-400 ml-1">
+                    {page?.category?.name || '---'}
+                  </span>
+                </p>
                 <div className="flex gap-6 text-sm text-gray-400 mb-4 bg-[#18181b] p-3 rounded-md">
                   <div className="flex flex-col">
                     <span className="text-xs text-gray-500 uppercase tracking-wider mb-1">
@@ -508,12 +543,14 @@ function Pages() {
       <AddPageModal
         onClose={onClose}
         handleAddPage={handleAddPage}
+        categories={categories?.data}
         open={show.state && show.type === 'add-page'}
         loading={loading.type === 'add-page' && loading.state}
       />
 
       <EditPageModal
         onClose={onClose}
+        categories={categories?.data}
         pageDetails={show?.data?.page}
         handleUpdatePage={handleUpdatePage}
         open={show.state && show.type === 'edit-page'}

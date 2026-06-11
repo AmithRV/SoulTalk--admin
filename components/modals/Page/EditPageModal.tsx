@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/incompatible-library */
 import { cn } from '@/lib/utils';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -7,6 +8,7 @@ type Inputs = {
   name: string;
   imageName: string;
   publicUrl: string;
+  categoryId: string;
   description: string;
 };
 
@@ -14,6 +16,7 @@ type props = {
   open: boolean;
   loading: boolean;
   pageDetails: any;
+  categories: any[];
   onClose: () => void;
   handleUpdatePage: (formData: any) => void;
 };
@@ -21,17 +24,21 @@ function EditPageModal({
   open,
   onClose,
   pageDetails,
+  categories = [],
   handleUpdatePage,
   loading = false,
 }: props) {
   //
   const {
     reset,
+    watch,
     setValue,
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
+
+  const categoryId = watch('categoryId');
 
   const onSubmit = (formData: Inputs) => {
     const data = {
@@ -40,6 +47,7 @@ function EditPageModal({
       name: formData?.name,
       publicUrl: formData?.publicUrl,
       imageName: formData?.imageName,
+      categoryId: formData?.categoryId,
       description: formData?.description,
     };
     handleUpdatePage(data);
@@ -64,6 +72,7 @@ function EditPageModal({
       });
       setValue('publicUrl', pageDetails?.publicUrl, { shouldValidate: true });
       setValue('imageName', pageDetails?.imageName);
+      setValue('categoryId', pageDetails?.category?._id);
     } else {
       reset();
     }
@@ -73,9 +82,44 @@ function EditPageModal({
     return (
       <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
         <div className="bg-[#17181c] rounded-lg w-full max-w-md p-6 max-h-screen overflow-y-auto">
-          <h2 className="text-lg mb-4">Add Page</h2>
+          <h2 className="text-lg mb-4">Edit Page</h2>
 
           <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+            {/* category */}
+            <div>
+              <label className="text-sm text-gray-400">Category</label>
+              <select
+                {...register('categoryId', {
+                  required: '*category is required',
+                })}
+                className={cn(
+                  'w-full mt-1 bg-[#2a2b30] p-2 rounded outline-none cursor-pointer',
+                  {
+                    'input-error': errors.categoryId,
+                    'cursor-not-allowed': categoryId,
+                  },
+                )}
+                defaultValue=""
+                disabled={categoryId ? true : false}
+              >
+                <option value="" disabled>
+                  Select a category
+                </option>
+                {categories?.map((page) => (
+                  <option
+                    key={page?._id}
+                    value={page?._id}
+                    className="cursor-pointer"
+                  >
+                    {page?.name}
+                  </option>
+                ))}
+              </select>
+
+              {errors.categoryId && (
+                <span className="form-error">{errors.categoryId.message}</span>
+              )}
+            </div>
             {/* Name */}
             <div>
               <label className="text-sm text-gray-400">Name</label>

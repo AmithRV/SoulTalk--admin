@@ -29,6 +29,23 @@ export async function GET(request) {
           as: 'visitorViews',
         },
       },
+
+      // category details
+      {
+        $lookup: {
+          from: 'categories',
+          localField: 'categoryId', // field in categories collection
+          foreignField: '_id',
+          as: 'category',
+        },
+      },
+      {
+        $unwind: {
+          path: '$category',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+
       {
         $addFields: {
           comments: {

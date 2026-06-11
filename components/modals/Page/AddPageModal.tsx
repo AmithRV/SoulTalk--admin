@@ -8,18 +8,21 @@ type Inputs = {
   name: string;
   imageName: string;
   publicUrl: string;
+  categoryId: string;
   description: string;
 };
 
 type props = {
   open: boolean;
   loading: boolean;
+  categories: any[];
   onClose: () => void;
   handleAddPage: (formData: any) => void;
 };
 function AddPageModal({
   open,
   onClose,
+  categories = [],
   handleAddPage,
   loading = false,
 }: props) {
@@ -34,6 +37,7 @@ function AddPageModal({
   } = useForm<Inputs>();
 
   const pageName = watch('name');
+  const categoryId = watch('categoryId');
 
   const onSubmit = (formData: Inputs) => {
     const data = {
@@ -41,6 +45,7 @@ function AddPageModal({
       name: formData?.name,
       publicUrl: formData?.publicUrl,
       imageName: formData?.imageName,
+      categoryId: formData?.categoryId,
       description: formData?.description,
     };
     handleAddPage(data);
@@ -70,7 +75,6 @@ function AddPageModal({
     }
   }, [open, reset]);
 
-  // bg-[#17181c] rounded-lg w-full max-w-md p-6 max-h-screen overflow-y-auto
   if (open) {
     return (
       <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 ">
@@ -78,6 +82,42 @@ function AddPageModal({
           <h2 className="text-lg mb-4">Add Page</h2>
 
           <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+            {/* category */}
+            <div>
+              <label className="text-sm text-gray-400">Category</label>
+              <select
+                {...register('categoryId', {
+                  required: '*category is required',
+                })}
+                className={cn(
+                  'w-full mt-1 bg-[#2a2b30] p-2 rounded outline-none cursor-pointer',
+                  {
+                    'input-error': errors.categoryId,
+                    'cursor-not-allowed': categoryId,
+                  },
+                )}
+                defaultValue=""
+                disabled={categoryId ? true : false}
+              >
+                <option value="" disabled>
+                  Select a category
+                </option>
+                {categories?.map((page) => (
+                  <option
+                    key={page?._id}
+                    value={page?._id}
+                    className="cursor-pointer"
+                  >
+                    {page?.name}
+                  </option>
+                ))}
+              </select>
+
+              {errors.categoryId && (
+                <span className="form-error">{errors.categoryId.message}</span>
+              )}
+            </div>
+
             {/* Name */}
             <div>
               <label className="text-sm text-gray-400">Name</label>
@@ -167,7 +207,7 @@ function AddPageModal({
             <div>
               <label className="text-sm text-gray-400">Description</label>
               <textarea
-                rows={4}
+                rows={2}
                 placeholder="Enter description"
                 {...register('description', {
                   required: '*description is required',

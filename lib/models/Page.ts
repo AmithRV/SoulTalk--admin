@@ -24,6 +24,11 @@ const pageSchema = new Schema(
       unique: false,
       required: false,
     },
+    categoryId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Category',
+      required: true,
+    },
   },
   { timestamps: true },
 );

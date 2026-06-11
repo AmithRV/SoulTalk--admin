@@ -5,6 +5,7 @@ export const addPageSchema = z.object({
   url: z.string().min(1, 'url rquired'),
   name: z.string().min(1, 'name rquired'),
   publicUrl: z.string().min(1, 'public url rquired'),
+  categoryId: z.string().min(1, 'categoryId rquired'),
   description: z.string().min(1, 'public url rquired'),
 });
 
@@ -13,6 +14,7 @@ export const updatePageSchema = z.object({
   url: z.string().min(1, 'url rquired'),
   name: z.string().min(1, 'name rquired'),
   publicUrl: z.string().min(1, 'public url rquired'),
+  categoryId: z.string().min(1, 'categoryId rquired'),
   description: z.string().min(1, 'public url rquired'),
   id: z.string().regex(/^[0-9a-fA-F]{24}$/, 'Invalid MongoDB ObjectId'),
 });

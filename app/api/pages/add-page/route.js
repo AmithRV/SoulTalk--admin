@@ -10,7 +10,7 @@ export async function POST(request) {
   try {
     const reqBody = await request.json();
 
-    const { name, url, publicUrl, description, imageName } =
+    const { name, url, publicUrl, description, imageName, categoryId } =
       addPageSchema.parse(reqBody);
 
     // Check if Page exists
@@ -29,6 +29,7 @@ export async function POST(request) {
         views: 0,
         publicUrl,
         imageName,
+        categoryId,
         description,
       });
 

@@ -151,7 +151,7 @@ function Categories() {
           loading={categories?.loading}
         />
         <p className="pl-4 pt-4 text-purple-600 font-semibold">
-          Total categories : {categories?.data?.length}
+          Total Categories : {categories?.data?.length}
         </p>
         {/* Center Content */}
         <div className="bg-[#1e1f23] text-white min-h-auto p-4">
@@ -312,7 +312,7 @@ function Categories() {
         </div>
 
         <div className="text-[#a855f7] font-medium mb-4 text-sm tracking-wide">
-          Total categories : {categories?.data?.length}{' '}
+          Total Categories : {categories?.data?.length}{' '}
         </div>
 
         <div className="flex flex-col gap-4">
@@ -323,7 +323,7 @@ function Categories() {
                 key={index}
                 className="bg-[#202024] rounded-lg p-4 border border-[#2d2d33] shadow-sm"
               >
-                <div className="flex justify-between items-start mb-3">
+                <div className="flex justify-between items-start">
                   <h2 className="text-base text-gray-100 dashed-underline leading-tight pr-4">
                     <Link
                       className="border-b border-dotted"
@@ -337,13 +337,15 @@ function Categories() {
                   </span>
                 </div>
 
+                <p className="text-sm my-2 text-gray-400">Pages : 0</p>
+
                 <div className="flex gap-6 text-sm text-gray-400 mb-4 bg-[#18181b] p-3 rounded-md">
                   <div className="flex flex-col">
                     <span className="text-xs text-gray-500 uppercase tracking-wider mb-1">
-                      Pages
+                      Description
                     </span>
                     <span className="text-gray-200 font-medium text-base">
-                      0
+                      {category?.description}
                     </span>
                   </div>
                 </div>
