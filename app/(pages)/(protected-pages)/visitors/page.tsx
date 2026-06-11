@@ -279,6 +279,14 @@ function Visitors() {
               </div>
             ))}
 
+          {!visitors?.loading && visitors?.data?.length === 0 && (
+            <div className="bg-[#202024] rounded-lg p-4 border border-[#2d2d33] shadow-sm">
+              <div className="text-sm text-gray-400 bg-[#18181b] p-3 rounded-md uppercase flex justify-center">
+                no visitors available
+              </div>
+            </div>
+          )}
+
           {visitors?.loading && (
             <div className="hover:bg-[#2a2b30]">
               <div className="w-full px-6 py-4 uppercase text-center font-bold">

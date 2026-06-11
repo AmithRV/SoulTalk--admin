@@ -33,6 +33,11 @@ function Layout({
       link: '/visitors',
       activeUrls: ['/visitors', `/visitors/${visitorId}`],
     },
+    {
+      name: 'Categories',
+      link: '/categories',
+      activeUrls: ['/categories'],
+    },
   ];
 
   const onClose = () => {

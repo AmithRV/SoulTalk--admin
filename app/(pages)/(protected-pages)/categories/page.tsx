@@ -5,7 +5,6 @@ import {
   Loader2,
   RefreshCcw,
   SquareTerminal,
-  SquareArrowOutUpRight,
 } from 'lucide-react';
 import moment from 'moment';
 import Link from 'next/link';
@@ -15,63 +14,36 @@ import {
   DeleteConfirmationModal,
 } from '@/components/modals';
 import { cn } from '@/lib/utils';
-import {
-  addPages,
-  listPages,
-  deletePage,
-  updatePage,
-} from '@/lib/api-collection/pages';
 import { show } from '@/types/index';
+import {
+  AddCategoryModal,
+  EditCategoryModal,
+} from '@/components/modals/category';
+import {
+  addCategory,
+  deleteCategory,
+  updateCategory,
+  listCategories,
+} from '@/lib/api-collection/categories';
 import { useEffect, useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
 import { TopBar } from '@/components/layout';
-import { AddPageModal, EditPageModal } from '@/components/modals/Page';
+import toast, { Toaster } from 'react-hot-toast';
 
-function Pages() {
+function Categories() {
   //
-  const [pages, setPages] = useState({ loading: true, data: [] });
   const [loading, setLoading] = useState({ type: '', state: false });
   const [show, setShow] = useState<show>({ state: false, type: '' });
+  const [categories, setCategories] = useState({ loading: true, data: [] });
 
   const onClose = () => {
     setShow({ state: false, type: '' });
   };
 
-  const handleSort = (type: string) => {
-    // 1. Create a shallow copy of the data array to avoid mutating React state directly
-    const sortedData = [...pages.data].sort((a: any, b: any) => {
-      const valueA = a[type];
-      const valueB = b[type];
-
-      // Safety check for undefined properties
-      if (valueA === undefined || valueB === undefined) return 0;
-
-      // 2. Handle Numbers (e.g., sorting by 'views')
-      if (typeof valueA === 'number' && typeof valueB === 'number') {
-        return valueA - valueB; // Ascending order
-      }
-
-      // 3. Handle Strings and Date Strings (e.g., sorting by 'name' or 'createdAt')
-      if (typeof valueA === 'string' && typeof valueB === 'string') {
-        // localeCompare handles alphabetical sorting and works perfectly for ISO date strings too
-        return valueA.localeCompare(valueB);
-      }
-
-      return 0;
-    });
-
-    // 4. Update the state while preserving the 'loading' flag
-    setPages((prevPages) => ({
-      ...prevPages,
-      data: sortedData,
-    }));
-  };
-
-  const handleListPages = () => {
-    setPages({ loading: true, data: [] });
-    listPages()
+  const handleListCategories = () => {
+    setCategories({ loading: true, data: [] });
+    listCategories()
       .then((res) => {
-        setPages({ data: res.data, loading: false });
+        setCategories({ data: res.data, loading: false });
       })
       .catch((error: any) => {
         //
@@ -79,15 +51,15 @@ function Pages() {
         const message = error?.response?.data?.message;
 
         toast.error(message || defaultMsg);
-        setPages({ data: [], loading: false });
+        setCategories({ data: [], loading: false });
       });
   };
 
-  const handleAddPage = (formData: any) => {
-    setLoading({ type: 'add-page', state: true });
-    addPages(formData)
+  const handleAddCategory = (formData: any) => {
+    setLoading({ type: 'add-category', state: true });
+    addCategory(formData)
       .then((res) => {
-        handleListPages();
+        handleListCategories();
         toast.success(res.message);
         onClose();
       })
@@ -99,16 +71,16 @@ function Pages() {
         toast.error(message || defaultMsg);
       })
       .finally(() => {
-        setLoading({ type: 'add-page', state: false });
+        setLoading({ type: 'add-category', state: false });
       });
   };
 
-  const handleDeletePage = () => {
-    const pageId = show?.data?.id;
-    setLoading({ type: 'delete-page', state: true });
-    deletePage(pageId)
+  const handleDeleteCategory = () => {
+    const categoryId = show?.data?.id;
+    setLoading({ type: 'delete-category', state: true });
+    deleteCategory(categoryId)
       .then((res) => {
-        handleListPages();
+        handleListCategories();
         toast.success(res.message);
         onClose();
       })
@@ -120,15 +92,15 @@ function Pages() {
         toast.error(message || defaultMsg);
       })
       .finally(() => {
-        setLoading({ type: 'delete-page', state: false });
+        setLoading({ type: 'delete-category', state: false });
       });
   };
 
-  const handleUpdatePage = (formData: any) => {
-    setLoading({ type: 'edit-page', state: true });
-    updatePage(formData)
+  const handleUpdateCategory = (formData: any) => {
+    setLoading({ type: 'edit-category', state: true });
+    updateCategory(formData)
       .then((res) => {
-        handleListPages();
+        handleListCategories();
         toast.success(res.message);
         onClose();
       })
@@ -140,32 +112,31 @@ function Pages() {
         toast.error(message || defaultMsg);
       })
       .finally(() => {
-        setLoading({ type: 'edit-page', state: false });
+        setLoading({ type: 'edit-category', state: false });
       });
   };
 
   const handleRefresh = () => {
-    handleListPages();
+    handleListCategories();
   };
 
   useEffect(() => {
-    handleListPages();
+    handleRefresh();
   }, []);
 
   return (
     <>
       <main className="flex-1 flex-col  hidden md:flex">
         <TopBar
-          label={`Pages (${pages?.data?.length || 0})`}
+          label={`Categories (${categories?.data?.length || 0})`}
           setShow={setShow}
-          btnlabel="Add Page"
-          actionType="add-page"
+          btnlabel="Add Category"
+          actionType="add-category"
           handleRefresh={handleRefresh}
-          loading={pages?.loading}
+          loading={categories?.loading}
         />
         <p className="pl-4 pt-4 text-purple-600 font-semibold">
-          Total Views :{' '}
-          {pages?.data?.reduce((sum, item: any) => sum + item.views, 0)}
+          Total categories : {categories?.data?.length}
         </p>
         {/* Center Content */}
         <div className="bg-[#1e1f23] text-white min-h-auto p-4">
@@ -178,63 +149,52 @@ function Pages() {
                   <tr>
                     <th className="px-6 py-3 w-12.5">#</th>
                     <th className="px-6 py-3">Name</th>
-                    <th
-                      className="px-6 py-3 cursor-pointer"
-                      onClick={() => handleSort('views')}
-                    >
-                      Views
-                    </th>
+                    <th className="px-6 py-3 cursor-pointer">Views</th>
                     <th className="px-6 py-3">Comments</th>
-                    <th
-                      className="px-6 py-3 cursor-pointer"
-                      onClick={() => handleSort('createdAt')}
-                    >
-                      Created At
-                    </th>
-                    <th
-                      className="px-6 py-3 cursor-pointer"
-                      onClick={() => handleSort('updatedAt')}
-                    >
-                      Updated At
-                    </th>
+                    <th className="px-6 py-3 cursor-pointer">Created At</th>
+                    <th className="px-6 py-3 cursor-pointer">Updated At</th>
                     <th className="px-6 py-3">Actions</th>
                   </tr>
                 </thead>
 
                 <tbody className="divide-y divide-gray-700">
-                  {!pages?.loading &&
-                    pages?.data?.length > 0 &&
-                    pages?.data.map((page: any, index) => (
-                      <tr key={page?._id} className="hover:bg-[#2a2b30]">
+                  {!categories?.loading &&
+                    categories?.data?.length > 0 &&
+                    categories?.data.map((category: any, index) => (
+                      <tr key={category?._id} className="hover:bg-[#2a2b30]">
                         <td className="px-6 py-4 w-12.5">{index + 1}</td>
                         <td className="px-6 py-4 ">
                           <Link
                             className="border-b border-dotted"
-                            href={`/pages/${page?._id}`}
+                            href={`/categories/${category?._id}`}
                           >
-                            {page?.name}
+                            {category?.name}
                           </Link>
                         </td>
-                        <td className="px-6 py-4">{page?.views}</td>
-                        <td className="px-6 py-4">{page?.comments || 0}</td>
+                        <td className="px-6 py-4">{category?.views}</td>
+                        <td className="px-6 py-4">{category?.comments || 0}</td>
 
                         <td className="px-6 py-4">
-                          {moment(page?.createdAt).format('DD-MMM-YY hh:mm A')}
+                          {moment(category?.createdAt).format(
+                            'DD-MMM-YY hh:mm A',
+                          )}
                         </td>
                         <td className="px-6 py-4">
-                          {moment(page?.updatedAt).format('DD-MMM-YY hh:mm A')}
+                          {moment(category?.updatedAt).format(
+                            'DD-MMM-YY hh:mm A',
+                          )}
                         </td>
                         <td className="px-6 py-4 text-green-400 flex items-center gap-4">
-                          <MyTooltip content="Edit Page">
+                          <MyTooltip content="Edit Category">
                             <Edit
                               onClick={() => {
                                 setShow({
                                   state: true,
-                                  type: 'edit-page',
+                                  type: 'edit-category',
                                   data: {
-                                    id: page?._id,
-                                    name: page?.name,
-                                    page,
+                                    id: category?._id,
+                                    name: category?.name,
+                                    category,
                                   },
                                 });
                               }}
@@ -242,14 +202,14 @@ function Pages() {
                             />
                           </MyTooltip>
 
-                          <MyTooltip content="View Page Details">
+                          <MyTooltip content="View Category Details">
                             <SquareTerminal
                               onClick={() => {
                                 setShow({
                                   state: true,
                                   type: 'preview-json',
                                   data: {
-                                    json: page,
+                                    json: category,
                                   },
                                 });
                               }}
@@ -257,27 +217,15 @@ function Pages() {
                             />
                           </MyTooltip>
 
-                          <MyTooltip content="Open Page">
-                            <SquareArrowOutUpRight
-                              onClick={() => {
-                                window.open(
-                                  `${process.env.NEXT_PUBLIC_DOMAIN}/${page?.publicUrl}`,
-                                  '_blank',
-                                );
-                              }}
-                              className="w-5 h-5 text-gray-400 cursor-pointer"
-                            />
-                          </MyTooltip>
-
-                          <MyTooltip content="Delete Page">
+                          <MyTooltip content="Delete Category">
                             <Trash2
                               onClick={() => {
                                 setShow({
                                   state: true,
-                                  type: 'delete-page',
+                                  type: 'delete-category',
                                   data: {
-                                    id: page?._id,
-                                    name: page?.name,
+                                    id: category?._id,
+                                    name: category?.name,
                                   },
                                 });
                               }}
@@ -288,18 +236,18 @@ function Pages() {
                       </tr>
                     ))}
 
-                  {!pages?.loading && pages?.data?.length === 0 && (
+                  {!categories?.loading && categories?.data?.length === 0 && (
                     <tr className="hover:bg-[#2a2b30]">
                       <td
                         className="px-6 py-4 uppercase text-center font-bold"
                         colSpan={7}
                       >
-                        no pages available
+                        no categories available
                       </td>
                     </tr>
                   )}
 
-                  {pages?.loading && (
+                  {categories?.loading && (
                     <tr className="hover:bg-[#2a2b30]">
                       <td
                         className="w-full px-6 py-4 uppercase text-center font-bold"
@@ -307,7 +255,7 @@ function Pages() {
                       >
                         <div className="flex justify-center items-center">
                           <Loader2 className="animate-spin mr-2 w-4 h-4" />
-                          loading pages
+                          loading categories
                         </div>
                       </td>
                     </tr>
@@ -322,17 +270,17 @@ function Pages() {
       <main className="flex-1 p-4 max-w-lg mx-auto w-full overflow-y-auto flex md:hidden flex-col mt-16">
         <div className="flex flex-col gap-4 mb-6">
           <h1 className="text-2xl font-medium text-white">
-            Pages ({pages?.data?.length || 0})
+            Categories ({categories?.data?.length || 0})
           </h1>
 
           <div className="flex gap-3">
             <button
               onClick={() => {
-                setShow({ type: 'add-page', state: true });
+                setShow({ type: 'add-category', state: true });
               }}
               className="bg-[#9333ea] hover:bg-purple-600 text-white px-4 py-2.5 rounded-md font-medium text-sm flex-1 shadow-sm transition-colors cursor-pointer"
             >
-              Add Page
+              Add Category
             </button>
             <button
               onClick={handleRefresh}
@@ -340,7 +288,7 @@ function Pages() {
             >
               <RefreshCcw
                 className={cn('w-4 h-4 mr-1', {
-                  'animate-spin': pages?.loading,
+                  'animate-spin': categories?.loading,
                 })}
               />
               Refresh
@@ -349,14 +297,13 @@ function Pages() {
         </div>
 
         <div className="text-[#a855f7] font-medium mb-4 text-sm tracking-wide">
-          Total Views :{' '}
-          {pages?.data?.reduce((sum, item: any) => sum + item.views, 0)}
+          Total categories : {categories?.data?.length}{' '}
         </div>
 
         <div className="flex flex-col gap-4">
-          {!pages?.loading &&
-            pages?.data?.length > 0 &&
-            pages?.data.map((page: any, index) => (
+          {!categories?.loading &&
+            categories?.data?.length > 0 &&
+            categories?.data.map((category: any, index) => (
               <div
                 key={index}
                 className="bg-[#202024] rounded-lg p-4 border border-[#2d2d33] shadow-sm"
@@ -365,9 +312,9 @@ function Pages() {
                   <h2 className="text-base text-gray-100 dashed-underline leading-tight pr-4">
                     <Link
                       className="border-b border-dotted"
-                      href={`/pages/${page?._id}`}
+                      href={`/categories/${category?._id}`}
                     >
-                      {page?.name}
+                      {category?.name}
                     </Link>
                   </h2>
                   <span className="text-xs font-mono text-gray-400 bg-[#2d2d33] px-2 py-1 rounded">
@@ -381,7 +328,7 @@ function Pages() {
                       Views
                     </span>
                     <span className="text-gray-200 font-medium text-base">
-                      {page?.views}
+                      {category?.views}
                     </span>
                   </div>
                   <div className="flex flex-col">
@@ -389,7 +336,7 @@ function Pages() {
                       Comments
                     </span>
                     <span className="text-gray-200 font-medium text-base">
-                      {page?.comments || 0}
+                      {category?.comments || 0}
                     </span>
                   </div>
                 </div>
@@ -398,28 +345,28 @@ function Pages() {
                   <div>
                     <span className="block text-gray-500 mb-1">Created At</span>
                     <span className="text-gray-300">
-                      {moment(page?.createdAt).format('DD-MMM-YY hh:mm A')}
+                      {moment(category?.createdAt).format('DD-MMM-YY hh:mm A')}
                     </span>
                   </div>
                   <div>
                     <span className="block text-gray-500 mb-1">Updated At</span>
                     <span className="text-gray-300">
-                      {moment(page?.updatedAt).format('DD-MMM-YY hh:mm A')}
+                      {moment(category?.updatedAt).format('DD-MMM-YY hh:mm A')}
                     </span>
                   </div>
                 </div>
 
                 <div className="flex gap-5 pt-3 border-t border-[#2d2d33] justify-end text-gray-400 text-lg">
-                  <MyTooltip content="Edit Page">
+                  <MyTooltip content="Edit Category">
                     <Edit
                       onClick={() => {
                         setShow({
                           state: true,
-                          type: 'edit-page',
+                          type: 'edit-category',
                           data: {
-                            id: page?._id,
-                            name: page?.name,
-                            page,
+                            id: category?._id,
+                            name: category?.name,
+                            category,
                           },
                         });
                       }}
@@ -427,14 +374,14 @@ function Pages() {
                     />
                   </MyTooltip>
 
-                  <MyTooltip content="View Page Details">
+                  <MyTooltip content="View Category Details">
                     <SquareTerminal
                       onClick={() => {
                         setShow({
                           state: true,
                           type: 'preview-json',
                           data: {
-                            json: page,
+                            json: category,
                           },
                         });
                       }}
@@ -442,27 +389,15 @@ function Pages() {
                     />
                   </MyTooltip>
 
-                  <MyTooltip content="Open Page">
-                    <SquareArrowOutUpRight
-                      onClick={() => {
-                        window.open(
-                          `${process.env.NEXT_PUBLIC_DOMAIN}/${page?.publicUrl}`,
-                          '_blank',
-                        );
-                      }}
-                      className="w-5 h-5 text-gray-400 cursor-pointer"
-                    />
-                  </MyTooltip>
-
-                  <MyTooltip content="Delete Page">
+                  <MyTooltip content="Delete Category">
                     <Trash2
                       onClick={() => {
                         setShow({
                           state: true,
-                          type: 'delete-page',
+                          type: 'delete-category',
                           data: {
-                            id: page?._id,
-                            name: page?.name,
+                            id: category?._id,
+                            name: category?.name,
                           },
                         });
                       }}
@@ -473,20 +408,20 @@ function Pages() {
               </div>
             ))}
 
-          {!pages?.loading && pages?.data?.length === 0 && (
+          {!categories?.loading && categories?.data?.length === 0 && (
             <div className="bg-[#202024] rounded-lg p-4 border border-[#2d2d33] shadow-sm">
               <div className="text-sm text-gray-400 bg-[#18181b] p-3 rounded-md uppercase flex justify-center">
-                no pages available
+                no categories available
               </div>
             </div>
           )}
 
-          {pages?.loading && (
+          {categories?.loading && (
             <div className="hover:bg-[#2a2b30]">
               <div className="w-full px-6 py-4 uppercase text-center font-bold">
                 <div className="flex justify-center items-center">
                   <Loader2 className="animate-spin mr-2 w-4 h-4" />
-                  loading pages
+                  loading categories
                 </div>
               </div>
             </div>
@@ -496,27 +431,27 @@ function Pages() {
 
       {/* Bottom Sheet */}
 
-      <AddPageModal
+      <AddCategoryModal
         onClose={onClose}
-        handleAddPage={handleAddPage}
-        open={show.state && show.type === 'add-page'}
-        loading={loading.type === 'add-page' && loading.state}
+        handleAddCategory={handleAddCategory}
+        open={show.state && show.type === 'add-category'}
+        loading={loading.type === 'add-category' && loading.state}
       />
 
-      <EditPageModal
+      <EditCategoryModal
         onClose={onClose}
-        pageDetails={show?.data?.page}
-        handleUpdatePage={handleUpdatePage}
-        open={show.state && show.type === 'edit-page'}
-        loading={loading.type === 'edit-page' && loading.state}
+        categoryDetails={show?.data?.category}
+        handleUpdateCategory={handleUpdateCategory}
+        open={show.state && show.type === 'edit-category'}
+        loading={loading.type === 'edit-category' && loading.state}
       />
 
       <DeleteConfirmationModal
         onClose={onClose}
-        onDelete={handleDeletePage}
-        msg={`page : ${show?.data?.name}`}
-        open={show.state && show.type === 'delete-page'}
-        loading={loading.state && loading.type === 'delete-page'}
+        onDelete={handleDeleteCategory}
+        msg={`Category : ${show?.data?.name}`}
+        open={show.state && show.type === 'delete-category'}
+        loading={loading.state && loading.type === 'delete-category'}
       />
 
       <JsonPreviewModal
@@ -529,4 +464,4 @@ function Pages() {
   );
 }
 
-export default Pages;
+export default Categories;
