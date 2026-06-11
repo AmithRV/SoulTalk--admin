@@ -37,7 +37,7 @@ function Visitors() {
   };
 
   const handleUpdateVisitor = (formData: any) => {
-    setLoading({ type: 'edit-page', state: true });
+    setLoading({ type: 'edit-visitor', state: true });
     updateVisitor(formData)
       .then((res) => {
         handleListVisitors();
@@ -52,7 +52,7 @@ function Visitors() {
         toast.error(message || defaultMsg);
       })
       .finally(() => {
-        setLoading({ type: 'edit-page', state: false });
+        setLoading({ type: 'edit-visitor', state: false });
       });
   };
   const handleRefresh = () => {
