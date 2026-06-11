@@ -18,6 +18,11 @@ export async function GET(request) {
       const visitor = await Visitor.findById(id);
 
       const views = await View.aggregate([
+        {
+          $match: {
+            visitorId: id,
+          },
+        },
         { $sort: { createdAt: -1 } },
         {
           $lookup: {
