@@ -106,14 +106,12 @@ function Pages() {
         setCategories({ data: [], loading: false });
       });
   };
+
   const handleAddPage = (formData: any) => {
     setLoading({ type: 'add-page', state: true });
     addPages(formData)
       .then((res) => {
-        setPages((prev: any) => ({
-          ...prev,
-          data: [{ ...res?.page, comments: 0, views: 0 }, ...prev.data],
-        }));
+        handleListPages();
         toast.success(res.message);
         onClose();
       })
