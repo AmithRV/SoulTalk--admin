@@ -16,7 +16,7 @@ function Layout({
   children: React.ReactNode;
 }>) {
   const router = useRouter();
-  const { id, visitorId } = useParams();
+  const { id, visitorId, categoryId } = useParams();
   const pathname = usePathname();
 
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
@@ -36,7 +36,7 @@ function Layout({
     {
       name: 'Categories',
       link: '/categories',
-      activeUrls: ['/categories'],
+      activeUrls: ['/categories', `/categories/${categoryId}`],
     },
   ];
 

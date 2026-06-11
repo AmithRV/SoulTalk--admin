@@ -97,19 +97,9 @@ function EditCategoryModal({
               <textarea
                 rows={4}
                 placeholder="Enter description"
-                {...register('description', {
-                  required: '*description is required',
-                })}
-                className={cn(
-                  'w-full mt-1 bg-[#2a2b30] p-2 rounded outline-none resize-none',
-                  {
-                    'input-error': errors.description,
-                  },
-                )}
+                {...register('description')}
+                className="w-full mt-1 bg-[#2a2b30] p-2 rounded outline-none resize-none"
               />{' '}
-              {errors.description && (
-                <span className="form-error">{errors.description.message}</span>
-              )}
             </div>
 
             {/* Actions */}

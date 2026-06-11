@@ -13,15 +13,23 @@ function MobileBottomSheet({
   setIsMobileNavOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   //
-  const { id } = useParams();
+  const { id, visitorId, categoryId } = useParams();
   const pathname = usePathname();
 
   const menu = [
     { name: 'Pages', link: '/', activeUrls: ['/', `/pages/${id}`] },
     { name: 'Comments', link: '/comments', activeUrls: ['/comments'] },
     { name: 'Views', link: '/views', activeUrls: ['/views'] },
-    { name: 'Visitors', link: '/visitors', activeUrls: ['/visitors'] },
-    { name: 'Categories', link: '/categories', activeUrls: ['/categories'] },
+    {
+      name: 'Visitors',
+      link: '/visitors',
+      activeUrls: ['/visitors', `/visitors/${visitorId}`],
+    },
+    {
+      name: 'Categories',
+      link: '/categories',
+      activeUrls: ['/categories', `/categories/${categoryId}`],
+    },
   ];
 
   return (
