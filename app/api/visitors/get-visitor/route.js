@@ -20,7 +20,7 @@ export async function GET(request) {
       const views = await View.aggregate([
         {
           $match: {
-            visitorId: id,
+            visitorId: new mongoose.Types.ObjectId(id),
           },
         },
         { $sort: { createdAt: -1 } },
