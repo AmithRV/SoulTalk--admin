@@ -23,8 +23,8 @@ import {
 } from '@/lib/api-collection/pages';
 import { show } from '@/types/index';
 import { useEffect, useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
 import { TopBar } from '@/components/layout';
+import toast, { Toaster } from 'react-hot-toast';
 import { AddPageModal, EditPageModal } from '@/components/modals/Page';
 
 function Pages() {
@@ -87,7 +87,10 @@ function Pages() {
     setLoading({ type: 'add-page', state: true });
     addPages(formData)
       .then((res) => {
-        handleListPages();
+        setPages((prev: any) => ({
+          ...prev,
+          data: [{ ...res?.page, comments: 0, views: 0 }, ...prev.data],
+        }));
         toast.success(res.message);
         onClose();
       })
@@ -108,7 +111,10 @@ function Pages() {
     setLoading({ type: 'delete-page', state: true });
     deletePage(pageId)
       .then((res) => {
-        handleListPages();
+        setPages((prev) => ({
+          ...prev,
+          data: prev.data.filter((page: any) => page._id !== pageId),
+        }));
         toast.success(res.message);
         onClose();
       })
@@ -149,7 +155,7 @@ function Pages() {
   };
 
   useEffect(() => {
-    handleListPages();
+    handleRefresh();
   }, []);
 
   return (
