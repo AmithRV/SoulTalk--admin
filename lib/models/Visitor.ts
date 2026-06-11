@@ -10,6 +10,10 @@ const visitorSchema = new Schema(
       type: String,
       required: false,
     },
+    name: {
+      type: String,
+      required: false,
+    },
   },
   { timestamps: true },
 );

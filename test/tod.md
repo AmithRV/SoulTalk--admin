@@ -1,1 +1,1 @@
-# dont update the views count manually, use the views stored in the table
+# add a new to vistors if needed
