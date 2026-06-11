@@ -17,7 +17,7 @@ export async function OPTIONS() {
 
 export async function GET() {
   try {
-    const categories = await Category.find(query).sort({ createdAt: -1 });
+    const categories = await Category.find().sort({ createdAt: -1 });
 
     return NextResponse.json(
       { data: categories },
