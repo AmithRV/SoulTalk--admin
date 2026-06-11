@@ -5,11 +5,24 @@ import { databaseConnection } from '@/lib/dbConfig';
 
 await databaseConnection();
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*', // replace with domain in prod
+  'Access-Control-Allow-Methods': 'GET, PATCH, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+};
+
+export async function OPTIONS() {
+  return NextResponse.json({}, { headers: corsHeaders });
+}
+
 export async function GET() {
   try {
     const categories = await Category.find(query).sort({ createdAt: -1 });
 
-    return NextResponse.json({ data: categories }, { status: 200 });
+    return NextResponse.json(
+      { data: categories },
+      { status: 200, headers: corsHeaders },
+    );
   } catch (error) {
     if (error.name === 'ZodError') {
       const message = formatZodErrors(error);
