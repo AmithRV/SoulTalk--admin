@@ -83,14 +83,31 @@ function Views() {
                     </div>
                   </div>
 
+                  <div className="flex flex-col md:hidden">
+                    <h3 className="text-[13px] text-neutral-400 font-medium mb-1.5">
+                      Visitor Name
+                    </h3>
+                    <div className="flex items-center gap-2 text-sm text-neutral-100">
+                      <span>{visitorDetails?.data?.visitor?.name}</span>
+                    </div>
+                  </div>
+
                   {/* row-1 --Desktop*/}
                   <div className=" grid-cols-2 gap-4 hidden md:grid">
-                    <div className="">
+                    <div>
                       <h3 className="text-[13px] text-neutral-400 font-medium mb-1.5">
                         Visitor Id
                       </h3>
                       <div className="flex items-center gap-2 text-sm text-neutral-100">
                         <span>{visitorDetails?.data?.visitor?._id}</span>
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="text-[13px] text-neutral-400 font-medium mb-1.5">
+                        Visitor Name
+                      </h3>
+                      <div className="flex items-center gap-2 text-sm text-neutral-100">
+                        <span>{visitorDetails?.data?.visitor?.name}</span>
                       </div>
                     </div>
                   </div>

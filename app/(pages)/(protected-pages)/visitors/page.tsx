@@ -118,7 +118,7 @@ function Visitors() {
                             href={`/visitors/${visitor?._id}`}
                             className="border-b border-dotted"
                           >
-                            {visitor?._id}
+                            {visitor?.name || visitor?._id}
                           </Link>
                         </td>
                         <td className="px-6 py-4">{visitor?.country}</td>
@@ -210,7 +210,7 @@ function Visitors() {
                       href={`/visitors/${visitor?._id}`}
                       className="border-b border-dotted"
                     >
-                      {visitor?._id}
+                      {visitor?.name || visitor?._id}
                     </Link>
                     <MyTooltip content="Edit Page">
                       <Edit
@@ -259,7 +259,7 @@ function Visitors() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-4 text-xs text-gray-400 mb-4">
+                <div className="grid grid-cols-2 gap-4 text-xs text-gray-400 mb-4">
                   <div>
                     <span className="block text-gray-500 mb-1">
                       First visit
