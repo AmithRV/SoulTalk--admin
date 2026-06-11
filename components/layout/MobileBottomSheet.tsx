@@ -21,6 +21,7 @@ function MobileBottomSheet({
     { name: 'Comments', link: '/comments', activeUrls: ['/comments'] },
     { name: 'Views', link: '/views', activeUrls: ['/views'] },
     { name: 'Visitors', link: '/visitors', activeUrls: ['/visitors'] },
+    { name: 'Categories', link: '/categories', activeUrls: ['/categories'] },
   ];
 
   return (

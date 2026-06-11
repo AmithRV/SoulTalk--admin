@@ -42,7 +42,10 @@ function Pages() {
   };
 
   const handleListPages = () => {
-    setPages({ loading: true, data: [] });
+    setPages((prev) => ({
+      ...prev,
+      loading: true,
+    }));
     listPages()
       .then((res) => {
         setPages({ data: res.data, loading: false });
@@ -58,7 +61,10 @@ function Pages() {
   };
 
   const handleListComments = () => {
-    setComments({ loading: true, data: [] });
+    setComments((prev) => ({
+      ...prev,
+      loading: true,
+    }));
     listComments()
       .then((res) => {
         setComments({ data: res.data, loading: false });
@@ -94,11 +100,14 @@ function Pages() {
   };
 
   const handleDeleteComment = () => {
-    const pageId = show?.data?.id;
+    const commentId = show?.data?.id;
     setLoading({ type: 'delete-comment', state: true });
-    deleteComment(pageId)
+    deleteComment(commentId)
       .then((res) => {
-        handleListComments();
+        setComments((prev) => ({
+          ...prev,
+          data: prev.data.filter((page: any) => page._id !== commentId),
+        }));
         toast.success(res.message);
         onClose();
       })
@@ -140,8 +149,7 @@ function Pages() {
   };
 
   useEffect(() => {
-    handleListPages();
-    handleListComments();
+    handleRefresh();
   }, []);
 
   return (

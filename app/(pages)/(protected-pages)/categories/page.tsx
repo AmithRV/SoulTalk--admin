@@ -40,7 +40,10 @@ function Categories() {
   };
 
   const handleListCategories = () => {
-    setCategories({ loading: true, data: [] });
+    setCategories((prev) => ({
+      ...prev,
+      loading: true,
+    }));
     listCategories()
       .then((res) => {
         setCategories({ data: res.data, loading: false });
@@ -59,7 +62,11 @@ function Categories() {
     setLoading({ type: 'add-category', state: true });
     addCategory(formData)
       .then((res) => {
-        handleListCategories();
+        setCategories((prev: any) => ({
+          ...prev,
+          data: [res.category, ...prev.data],
+          state: false,
+        }));
         toast.success(res.message);
         onClose();
       })
@@ -80,7 +87,10 @@ function Categories() {
     setLoading({ type: 'delete-category', state: true });
     deleteCategory(categoryId)
       .then((res) => {
-        handleListCategories();
+        setCategories((prev) => ({
+          ...prev,
+          data: prev.data.filter((page: any) => page._id !== categoryId),
+        }));
         toast.success(res.message);
         onClose();
       })
@@ -100,7 +110,12 @@ function Categories() {
     setLoading({ type: 'edit-category', state: true });
     updateCategory(formData)
       .then((res) => {
-        handleListCategories();
+        setCategories((prev: any) => ({
+          ...prev,
+          data: prev.data.map((category: any) =>
+            category._id == formData.id ? res?.category : category,
+          ),
+        }));
         toast.success(res.message);
         onClose();
       })
@@ -149,7 +164,7 @@ function Categories() {
                   <tr>
                     <th className="px-6 py-3 w-12.5">#</th>
                     <th className="px-6 py-3">Name</th>
-                    <th className="px-6 py-3 cursor-pointer">Views</th>
+                    <th className="px-6 py-3 cursor-pointer">Pages</th>
                     <th className="px-6 py-3">Comments</th>
                     <th className="px-6 py-3 cursor-pointer">Created At</th>
                     <th className="px-6 py-3 cursor-pointer">Updated At</th>
@@ -325,18 +340,10 @@ function Categories() {
                 <div className="flex gap-6 text-sm text-gray-400 mb-4 bg-[#18181b] p-3 rounded-md">
                   <div className="flex flex-col">
                     <span className="text-xs text-gray-500 uppercase tracking-wider mb-1">
-                      Views
+                      Pages
                     </span>
                     <span className="text-gray-200 font-medium text-base">
-                      {category?.views}
-                    </span>
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-xs text-gray-500 uppercase tracking-wider mb-1">
-                      Comments
-                    </span>
-                    <span className="text-gray-200 font-medium text-base">
-                      {category?.comments || 0}
+                      0
                     </span>
                   </div>
                 </div>

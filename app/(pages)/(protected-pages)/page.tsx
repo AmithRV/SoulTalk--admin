@@ -68,7 +68,10 @@ function Pages() {
   };
 
   const handleListPages = () => {
-    setPages({ loading: true, data: [] });
+    setPages((prev) => ({
+      ...prev,
+      loading: true,
+    }));
     listPages()
       .then((res) => {
         setPages({ data: res.data, loading: false });

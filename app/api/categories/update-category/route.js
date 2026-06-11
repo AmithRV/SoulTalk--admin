@@ -20,7 +20,7 @@ export async function PATCH(request) {
         { status: 404 },
       );
     } else {
-      const updated = await categoryExists.findByIdAndUpdate(
+      const updated = await Category.findByIdAndUpdate(
         id,
         {
           $set: {
