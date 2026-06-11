@@ -7,7 +7,31 @@ await databaseConnection();
 
 export async function GET() {
   try {
-    const categories = await Category.find().sort({ createdAt: -1 });
+    const categories = await Category.aggregate([
+      {
+        $lookup: {
+          from: 'pages',
+          localField: '_id',
+          foreignField: 'categoryId',
+          as: 'totalPages',
+        },
+      },
+      {
+        $addFields: {
+          pages: {
+            $size: {
+              $ifNull: ['$totalPages', []],
+            },
+          },
+        },
+      },
+      {
+        $project: {
+          totalPages: 0,
+        },
+      },
+      { $sort: { createdAt: -1 } },
+    ]);
     return NextResponse.json({ data: categories }, { status: 200 });
   } catch (error) {
     if (error.name === 'ZodError') {

@@ -17,11 +17,11 @@ function Views() {
     loading: boolean;
   }>({ data: {}, loading: false });
 
-  const handleGetVisitorDetails = () => {
+  const handleGetCategoryDetails = () => {
     setCategoryDetails({ loading: true, data: [] });
     getCategory(categoryId)
       .then((res) => {
-        setCategoryDetails({ data: res.data?.category, loading: false });
+        setCategoryDetails({ data: res.data, loading: false });
       })
       .catch((error: any) => {
         //
@@ -34,13 +34,12 @@ function Views() {
   };
 
   const handleRefresh = () => {
-    handleGetVisitorDetails();
+    handleGetCategoryDetails();
   };
 
   useEffect(() => {
-    handleGetVisitorDetails();
+    handleRefresh();
   }, []);
-  console.log('categoryDetails : ', categoryDetails);
 
   return (
     <>
@@ -80,7 +79,7 @@ function Views() {
                       Category Id
                     </h3>
                     <div className="flex items-center gap-2 text-sm text-neutral-100">
-                      <span>{categoryDetails?.data?._id}</span>
+                      <span>{categoryDetails?.data?.category?._id}</span>
                     </div>
                   </div>
 
@@ -89,7 +88,7 @@ function Views() {
                       Name
                     </h3>
                     <div className="flex items-center gap-2 text-sm text-neutral-100">
-                      <span>{categoryDetails?.data?.name}</span>
+                      <span>{categoryDetails?.data?.category?.name}</span>
                     </div>
                   </div>
 
@@ -100,7 +99,7 @@ function Views() {
                         Category Id
                       </h3>
                       <div className="flex items-center gap-2 text-sm text-neutral-100">
-                        <span>{categoryDetails?.data?._id}</span>
+                        <span>{categoryDetails?.data?.category?._id}</span>
                       </div>
                     </div>
                     <div>
@@ -108,7 +107,7 @@ function Views() {
                         Name
                       </h3>
                       <div className="flex items-center gap-2 text-sm text-neutral-100">
-                        <span>{categoryDetails?.data?.name}</span>
+                        <span>{categoryDetails?.data?.category?.name}</span>
                       </div>
                     </div>
                   </div>
@@ -121,9 +120,9 @@ function Views() {
                       </h3>
                       <div className="flex items-center gap-2 text-sm text-neutral-100">
                         <span>
-                          {moment(categoryDetails?.data?.createdAt).format(
-                            'DD-MMM-YY hh:mm A',
-                          )}
+                          {moment(
+                            categoryDetails?.data?.category?.createdAt,
+                          ).format('DD-MMM-YY hh:mm A')}
                         </span>
                       </div>
                     </div>
@@ -133,9 +132,9 @@ function Views() {
                       </h3>
                       <div className="flex items-center gap-2 text-sm text-neutral-100">
                         <span>
-                          {moment(categoryDetails?.data?.updatedAt).format(
-                            'DD-MMM-YY hh:mm A',
-                          )}
+                          {moment(
+                            categoryDetails?.data?.category?.updatedAt,
+                          ).format('DD-MMM-YY hh:mm A')}
                         </span>
                       </div>
                     </div>
@@ -146,8 +145,8 @@ function Views() {
           </div>
         </main>
 
-        <p className="pl-4 text-purple-600 font-semibold mb-4">
-          Total Pages : 0
+        <p className="pl-4 text-purple-600 font-semibold">
+          Total Pages : {categoryDetails?.data?.pages?.length}
         </p>
         {/* Desktop Views */}
         <div className="bg-[#1e1f23] text-white min-h-auto p-4 hidden md:block">
@@ -160,31 +159,32 @@ function Views() {
                   <tr>
                     <th className="px-6 py-3 w-12.5">#</th>
                     <th className="px-6 py-3 cursor-pointer">Page</th>
-                    <th className="px-6 py-3">Country</th>
-                    <th className="px-6 py-3 cursor-pointer">Visited At</th>
+                    <th className="px-6 py-3 cursor-pointer">Created At</th>
+                    <th className="px-6 py-3 cursor-pointer">Updated At</th>
                   </tr>
                 </thead>
 
                 <tbody className="divide-y divide-gray-700">
                   {!categoryDetails?.loading &&
-                    categoryDetails?.data?.views?.length > 0 &&
-                    categoryDetails?.data?.views?.map(
-                      (view: any, index: number) => (
-                        <tr key={view?._id} className="hover:bg-[#2a2b30]">
+                    categoryDetails?.data?.pages?.map(
+                      (page: any, index: number) => (
+                        <tr key={page?._id} className="hover:bg-[#2a2b30]">
                           <td className="px-6 py-4 w-12.5">{index + 1}</td>
                           <td className="px-6 py-4">
                             <Link
-                              href={`/pages/${view?.page?._id}`}
+                              href={`/pages/${page?._id}`}
                               className="border-b border-dotted"
                             >
-                              {view?.page?.name}
+                              {page?.name}
                             </Link>
                           </td>
                           <td className="px-6 py-4">
-                            {view?.country || 'N/A'}
+                            {moment(page?.createdAt).format(
+                              'DD-MMM-YY hh:mm A',
+                            )}
                           </td>
                           <td className="px-6 py-4">
-                            {moment(view?.createdAt).format(
+                            {moment(page?.updatedAt).format(
                               'DD-MMM-YY hh:mm A',
                             )}
                           </td>
@@ -193,13 +193,13 @@ function Views() {
                     )}
 
                   {!categoryDetails?.loading &&
-                    categoryDetails?.data?.length === 0 && (
+                    categoryDetails?.data?.pages?.length === 0 && (
                       <tr className="hover:bg-[#2a2b30]">
                         <td
                           className="px-6 py-4 uppercase text-center font-bold"
                           colSpan={7}
                         >
-                          no views available
+                          no pages available
                         </td>
                       </tr>
                     )}
@@ -212,7 +212,7 @@ function Views() {
                       >
                         <div className="flex justify-center items-center">
                           <Loader2 className="animate-spin mr-2 w-4 h-4" />
-                          loading views
+                          loading pages
                         </div>
                       </td>
                     </tr>
@@ -224,10 +224,9 @@ function Views() {
         </div>
 
         {/* Mobile Views */}
-        <div className="flex flex-col gap-4 md:hidden ">
+        <div className="flex flex-col gap-4 md:hidden mt-2">
           {!categoryDetails?.loading &&
-            categoryDetails?.data?.views?.length > 0 &&
-            categoryDetails?.data?.views.map((view: any, index: number) => (
+            categoryDetails?.data?.pages?.map((page: any, index: number) => (
               <div
                 key={index}
                 className="bg-[#202024] rounded-lg p-4 mx-4 border border-[#2d2d33] shadow-sm"
@@ -236,9 +235,9 @@ function Views() {
                   <h2 className="text-base text-gray-100 dashed-underline leading-tight pr-4">
                     <Link
                       className="border-b border-dotted"
-                      href={`/pages/${view?.page?._id}`}
+                      href={`/pages/${page?._id}`}
                     >
-                      {view?.page?.name}
+                      {page?.name}
                     </Link>
                   </h2>
                   <span className="text-xs font-mono text-gray-400 bg-[#2d2d33] px-2 py-1 rounded">
@@ -248,22 +247,29 @@ function Views() {
 
                 <div className="grid grid-cols-2 gap-4 text-xs text-gray-400 mb-4">
                   <div>
-                    <span className="block text-gray-500 mb-1">Country</span>
-                    <span className="text-gray-300">{view?.country}</span>
+                    <span className="block text-gray-500 mb-1">Created At</span>
+                    <span className="text-gray-300">
+                      {moment(page?.createdAt).format('DD-MMM-YY hh:mm A')}{' '}
+                    </span>
                   </div>
                   <div>
-                    <span className="block text-gray-500 mb-1">
-                      {' '}
-                      Visited At
-                    </span>
+                    <span className="block text-gray-500 mb-1">Updated At</span>
                     <span className="text-gray-300">
-                      {' '}
-                      {moment(view?.createdAt).format('DD-MMM-YY hh:mm A')}{' '}
+                      {moment(page?.updatedAt).format('DD-MMM-YY hh:mm A')}{' '}
                     </span>
                   </div>
                 </div>
               </div>
             ))}
+
+          {!categoryDetails?.loading &&
+            categoryDetails?.data?.pages?.length === 0 && (
+              <div className="bg-[#202024] rounded-lg p-4 mx-4 border border-[#2d2d33] shadow-sm">
+                <div className="text-sm text-gray-400 bg-[#18181b] p-3 rounded-md uppercase flex justify-center">
+                  no pages available
+                </div>
+              </div>
+            )}
 
           {categoryDetails?.loading && (
             <div className="hover:bg-[#2a2b30]">

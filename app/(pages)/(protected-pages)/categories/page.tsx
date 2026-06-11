@@ -165,7 +165,6 @@ function Categories() {
                     <th className="px-6 py-3 w-12.5">#</th>
                     <th className="px-6 py-3">Name</th>
                     <th className="px-6 py-3 cursor-pointer">Pages</th>
-                    <th className="px-6 py-3">Comments</th>
                     <th className="px-6 py-3 cursor-pointer">Created At</th>
                     <th className="px-6 py-3 cursor-pointer">Updated At</th>
                     <th className="px-6 py-3">Actions</th>
@@ -186,8 +185,7 @@ function Categories() {
                             {category?.name}
                           </Link>
                         </td>
-                        <td className="px-6 py-4">{category?.views}</td>
-                        <td className="px-6 py-4">{category?.comments || 0}</td>
+                        <td className="px-6 py-4">{category?.pages}</td>
 
                         <td className="px-6 py-4">
                           {moment(category?.createdAt).format(
