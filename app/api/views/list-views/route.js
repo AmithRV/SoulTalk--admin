@@ -26,6 +26,22 @@ export async function GET(request) {
           preserveNullAndEmptyArrays: true, // optional
         },
       },
+
+      // Visitor details
+      {
+        $lookup: {
+          from: 'visitors',
+          localField: 'visitorId', // field in View collection
+          foreignField: '_id',
+          as: 'visitor',
+        },
+      },
+      {
+        $unwind: {
+          path: '$visitor',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
     ]);
 
     return NextResponse.json({ data: views }, { status: 200 });

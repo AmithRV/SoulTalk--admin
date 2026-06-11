@@ -194,9 +194,11 @@ function Pages() {
                         <td className="px-6 py-4">{comment?.comment}</td>
 
                         <td className="px-6 py-4">
-                          {moment(comment?.createdAt).format(
-                            'DD-MMM-YY hh:mm A',
-                          )}
+                          <p className="min-w-max">
+                            {moment(comment?.createdAt).format(
+                              'DD-MMM-YY hh:mm A',
+                            )}
+                          </p>
                         </td>
 
                         <td className="px-6 py-4 text-green-400 flex items-center gap-4">

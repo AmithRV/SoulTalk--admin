@@ -88,7 +88,7 @@ function Views() {
                               href={`/visitors/${view?.visitorId}`}
                               className="border-b border-dotted"
                             >
-                              {view?.visitorId}
+                              {view?.visitor?.name || view?.visitorId}
                             </Link>
                           ) : (
                             'N/A'
@@ -190,7 +190,7 @@ function Views() {
                         href={`/visitors/${view?.visitorId}`}
                         className="border-b border-dotted"
                       >
-                        {view?.visitorId}
+                        {view?.visitor?.name || view?.visitorId}
                       </Link>
                     ) : (
                       'N/A'
