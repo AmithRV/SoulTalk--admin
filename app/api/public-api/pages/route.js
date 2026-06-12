@@ -22,7 +22,7 @@ export async function GET() {
     return NextResponse.json(
       {
         message: 'pages',
-        data: { mostViewd, pages },
+        data: { pages },
       },
       { status: 200, headers: corsHeaders },
     );
