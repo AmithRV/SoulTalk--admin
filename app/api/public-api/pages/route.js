@@ -15,9 +15,27 @@ export async function OPTIONS() {
   return NextResponse.json({}, { headers: corsHeaders });
 }
 
-export async function GET() {
+export async function GET(request) {
   try {
-    const pages = await Page.find().sort({ createdAt: -1 });
+    const { searchParams } = new URL(request.url);
+
+    const categoryId = searchParams.get('categoryId');
+
+    // Build the query dynamically
+    const query = {};
+
+    if (categoryId) {
+      // Optional: Check if valid to prevent CastErrors on malformed IDs
+      if (!mongoose.Types.ObjectId.isValid(categoryId)) {
+        return NextResponse.json(
+          { message: 'Invalid categoryId format' },
+          { status: 400 },
+        );
+      }
+      query.categoryId = categoryId;
+    }
+
+    const pages = await Page.find(query).sort({ createdAt: -1 });
 
     return NextResponse.json(
       {
