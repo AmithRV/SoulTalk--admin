@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import Page from '@/lib/models/Page';
 import { NextResponse } from 'next/server';
 import { formatZodErrors } from '@/lib/utils';
