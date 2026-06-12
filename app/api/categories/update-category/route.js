@@ -10,7 +10,7 @@ export async function PATCH(request) {
   try {
     const reqBody = await request.json();
 
-    const { id, name, description } = updateCategorySchema.parse(reqBody);
+    const { id, name, description, path } = updateCategorySchema.parse(reqBody);
 
     const categoryExists = await Category.findById(id);
 
@@ -25,6 +25,7 @@ export async function PATCH(request) {
         {
           $set: {
             name,
+            path,
             description,
           },
         },

@@ -3,10 +3,8 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 type Inputs = {
-  url: string;
+  path: string;
   name: string;
-  imageName: string;
-  publicUrl: string;
   description: string;
 };
 
@@ -34,6 +32,7 @@ function AddCategoryModal({
   const onSubmit = (formData: Inputs) => {
     const data = {
       name: formData?.name,
+      path: formData?.path,
       description: formData?.description,
     };
     handleAddCategory(data);
@@ -74,6 +73,27 @@ function AddCategoryModal({
               />{' '}
               {errors.name && (
                 <span className="form-error">{errors.name.message}</span>
+              )}
+            </div>
+
+            {/* Path */}
+            <div>
+              <label className="text-sm text-gray-400">Path</label>
+              <input
+                type="text"
+                placeholder="Enter path"
+                {...register('path', {
+                  required: '*path is required',
+                })}
+                className={cn(
+                  'w-full mt-1 bg-[#2a2b30] p-2 rounded outline-none',
+                  {
+                    'input-error': errors.path,
+                  },
+                )}
+              />{' '}
+              {errors.path && (
+                <span className="form-error">{errors.path.message}</span>
               )}
             </div>
 

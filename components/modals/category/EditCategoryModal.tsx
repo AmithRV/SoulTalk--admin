@@ -3,10 +3,8 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 type Inputs = {
-  url: string;
+  path: string;
   name: string;
-  imageName: string;
-  publicUrl: string;
   description: string;
 };
 
@@ -37,6 +35,7 @@ function EditCategoryModal({
     const data = {
       id: categoryDetails?._id,
       name: formData?.name,
+      path: formData?.path,
       description: formData?.description,
     };
     handleUpdateCategory(data);
@@ -58,6 +57,7 @@ function EditCategoryModal({
       setValue('description', categoryDetails?.description, {
         shouldValidate: true,
       });
+      setValue('path', categoryDetails?.path, { shouldValidate: true });
     } else {
       reset();
     }
@@ -67,7 +67,7 @@ function EditCategoryModal({
     return (
       <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
         <div className="bg-[#17181c] rounded-lg w-full max-w-md p-6 max-h-screen overflow-y-auto">
-          <h2 className="text-lg mb-4">Add Category</h2>
+          <h2 className="text-lg mb-4">Edit Category</h2>
 
           <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
             {/* Name */}
@@ -88,6 +88,27 @@ function EditCategoryModal({
               />{' '}
               {errors.name && (
                 <span className="form-error">{errors.name.message}</span>
+              )}
+            </div>
+
+            {/* Path */}
+            <div>
+              <label className="text-sm text-gray-400">Path</label>
+              <input
+                type="text"
+                placeholder="Enter path"
+                {...register('path', {
+                  required: '*path is required',
+                })}
+                className={cn(
+                  'w-full mt-1 bg-[#2a2b30] p-2 rounded outline-none',
+                  {
+                    'input-error': errors.path,
+                  },
+                )}
+              />{' '}
+              {errors.path && (
+                <span className="form-error">{errors.path.message}</span>
               )}
             </div>
 

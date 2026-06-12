@@ -10,7 +10,7 @@ export async function POST(request) {
   try {
     const reqBody = await request.json();
 
-    const { name, description } = addCategorySchema.parse(reqBody);
+    const { name, description, path } = addCategorySchema.parse(reqBody);
 
     // Check if Category exists
     const categoryExists = await Category.findOne({ name });
@@ -24,6 +24,7 @@ export async function POST(request) {
       //
       const newCategory = await Category.create({
         name,
+        path,
         description,
       });
 
